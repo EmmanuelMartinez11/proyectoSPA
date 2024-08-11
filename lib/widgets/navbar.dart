@@ -22,7 +22,8 @@ class NavBar extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.menu, color: Colors.white),
                 onPressed: () {
-                  Scaffold.of(context).openEndDrawer(); // Abre el endDrawer al hacer clic
+                  Scaffold.of(context)
+                      .openEndDrawer(); // Abre el endDrawer al hacer clic
                 },
               ),
             ],
@@ -39,21 +40,29 @@ class NavBar extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Logo',
-                    style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
                   ),
                   Row(
                     children: navLinks.map((item) {
                       return Padding(
                         padding: EdgeInsets.only(left: 18),
                         child: MouseRegion(
-                          cursor: SystemMouseCursors.click, // Cambia el cursor a una manito
+                          cursor: SystemMouseCursors
+                              .click, // Cambia el cursor a una manito
                           child: InkWell(
                             onTap: () {
-                              Navigator.pushNamed(context, item["route"]!); // Navega a la ruta
+                              Navigator.pushNamed(
+                                  context, item["route"]!); // Navega a la ruta
                             },
                             child: Text(
                               item["label"]!,
-                              style: TextStyle(fontFamily: "Montserrat-Bold", color: Colors.white, fontSize: 16),
+                              style: TextStyle(
+                                  fontFamily: "Montserrat-Bold",
+                                  color: Colors.white,
+                                  fontSize: 16),
                             ),
                           ),
                         ),
