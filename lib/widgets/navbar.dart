@@ -16,8 +16,11 @@ class NavBar extends StatelessWidget {
         if (isSmallScreen) {
           // Para pantallas pequeñas, muestra el Drawer
           return AppBar(
-            title: Text('Logo'),
-            backgroundColor: Colors.cyan,
+            title: Image.asset(
+              '../assets/images/logo_spa.png', // Ruta de la imagen del logo
+              height: 40, // Altura del logo
+            ),
+            backgroundColor: const Color.fromARGB(255, 216, 176, 190),
             actions: [
               IconButton(
                 icon: Icon(Icons.menu, color: Colors.white),
@@ -31,27 +34,23 @@ class NavBar extends StatelessWidget {
         } else {
           // Para pantallas grandes, muestra el NavBar
           return Container(
-            color: Colors.cyan, // Color celeste
+            color: const Color.fromARGB(255, 216, 176, 190), // Color de fondo
             height: 80, // Altura del navbar
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    'Logo',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
+                  Image.asset(
+                    '../assets/images/logo_spa.png', // Ruta de la imagen del logo
+                    height: 60, // Altura del logo
                   ),
                   Row(
                     children: navLinks.map((item) {
                       return Padding(
                         padding: EdgeInsets.only(left: 18),
                         child: MouseRegion(
-                          cursor: SystemMouseCursors
-                              .click, // Cambia el cursor a una manito
+                          cursor: SystemMouseCursors.click, // Cambia el cursor a una manito
                           child: InkWell(
                             onTap: () {
                               Navigator.pushNamed(
