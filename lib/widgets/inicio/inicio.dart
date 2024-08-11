@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:infinite_carousel/infinite_carousel.dart';
 import '../navbar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Inicio extends StatefulWidget {
   @override
@@ -11,12 +12,12 @@ class Inicio extends StatefulWidget {
 
 class _InicioState extends State<Inicio> {
   List<String> images = [
-    "../assets/images/drenaje_linfatico.jpg",
-    "../assets/images/facial.jpg",
-    "../assets/images/masajes.jpg",
-    "../assets/images/podoestetica.jpg",
-    "../assets/images/ventosas.jpg",
-    "../assets/images/depilacion_laser.png",
+    "../assets/images/inicio/drenaje_linfatico.jpg",
+    "../assets/images/inicio/facial.jpg",
+    "../assets/images/inicio/masajes.jpg",
+    "../assets/images/inicio/podoestetica.jpg",
+    "../assets/images/inicio/ventosas.jpg",
+    "../assets/images/inicio/depilacion_laser.png",
   ];
 
   final LatLng _spaLocation = const LatLng(-27.450953544514192, -58.97908033769105); // Coordenadas del spa
@@ -53,7 +54,7 @@ class _InicioState extends State<Inicio> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-                '../assets/images/background.jpg'), // Imagen de fondo
+                '../assets/images/inicio/background.jpg'), // Imagen de fondo
             fit: BoxFit.cover,
           ),
         ),
@@ -181,25 +182,80 @@ class _InicioState extends State<Inicio> {
                       Expanded(
                         child: Container(
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 205, 72, 117),
+                            color: const Color.fromARGB(255, 216, 176, 190)
+                                .withOpacity(0.9),
                             border: Border.all(color: Colors.black),
                           ),
                           height: 250,
                           child: const Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Text(
-                              'Contactos:\n\nTeléfono:\nEmail:\nDirección:',
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.left,
+                            padding: EdgeInsets.all(16.0), 
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    FaIcon(FontAwesomeIcons.whatsapp, color: Colors.white,),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      '+54 3716-616131',
+                                      style: TextStyle(fontSize: 16),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    FaIcon(FontAwesomeIcons.xTwitter, color: Colors.white,),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      '@spa_sentirsebien',
+                                      style: TextStyle(fontSize: 16),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    FaIcon(FontAwesomeIcons.instagram, color: Colors.white,),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'spa_sentirsebien',
+                                      style: TextStyle(fontSize: 16),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    FaIcon(FontAwesomeIcons.envelope, color: Colors.white,),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'spa_sentirsebien@gmail.com',
+                                      style: TextStyle(fontSize: 16),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    FaIcon(FontAwesomeIcons.locationDot, color: Colors.white,),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Calle French 440, Resistencia, Chaco',
+                                      style: TextStyle(fontSize: 16),
+                                    )
+                                  ],
+                                )
+                              ],
                             ),
                           ),
-                        ),
+                        )
                       ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: Container(
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 205, 72, 117),
+                            color: const Color.fromARGB(255, 216, 176, 190),
                             border: Border.all(color: Colors.black),
                           ),
                           height: 250,
@@ -210,7 +266,7 @@ class _InicioState extends State<Inicio> {
                             ),
                             markers: {
                               Marker(
-                                markerId: MarkerId('Spa'),
+                                markerId: const MarkerId('Spa'),
                                 position: _spaLocation,
                                 infoWindow: const InfoWindow(
                                   title: 'Spa Sentirse Bien',
