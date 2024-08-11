@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:infinite_carousel/infinite_carousel.dart';
 import '../navbar.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Inicio extends StatefulWidget {
   @override
@@ -17,6 +18,9 @@ class _InicioState extends State<Inicio> {
     "../assets/images/ventosas.jpg",
     "../assets/images/depilacion_laser.png",
   ];
+
+  final LatLng _spaLocation = const LatLng(-27.450953544514192, -58.97908033769105); // Coordenadas del spa
+
 
   final InfiniteScrollController _carouselController =
       InfiniteScrollController();
@@ -199,12 +203,21 @@ class _InicioState extends State<Inicio> {
                             border: Border.all(color: Colors.black),
                           ),
                           height: 250,
-                          child: const Center(
-                            child: Text(
-                              'Ubicación',
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.center,
+                          child: GoogleMap(
+                            initialCameraPosition: CameraPosition(
+                              target: _spaLocation,
+                              zoom: 17.0,
                             ),
+                            markers: {
+                              Marker(
+                                markerId: MarkerId('Spa'),
+                                position: _spaLocation,
+                                infoWindow: const InfoWindow(
+                                  title: 'Spa Sentirse Bien',
+                                  snippet: 'Calle French 440, Resistencia, Chaco'
+                                )
+                              )
+                            },
                           ),
                         ),
                       ),
