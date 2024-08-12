@@ -46,7 +46,7 @@ class NavBar extends StatelessWidget {
                     '../assets/images/logo_spa.png', // Ruta de la imagen del logo
                     height: 60, // Altura del logo
                   ),
-                 Text(
+                  Text(
                     'Sentirse Bien',
                     style: GoogleFonts.dancingScript(
                       textStyle: const TextStyle(fontSize: 36, color: Colors.black),
