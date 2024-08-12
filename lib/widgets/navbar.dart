@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NavBar extends StatelessWidget {
   final List<Map<String, String>> navLinks = [
@@ -44,6 +45,12 @@ class NavBar extends StatelessWidget {
                   Image.asset(
                     '../assets/images/logo_spa.png', // Ruta de la imagen del logo
                     height: 60, // Altura del logo
+                  ),
+                 Text(
+                    'Sentirse Bien',
+                    style: GoogleFonts.dancingScript(
+                      textStyle: const TextStyle(fontSize: 36, color: Colors.black),
+                    ),
                   ),
                   Row(
                     children: navLinks.map((item) {
