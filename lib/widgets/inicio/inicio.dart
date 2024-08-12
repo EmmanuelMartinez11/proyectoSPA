@@ -4,6 +4,7 @@ import 'package:infinite_carousel/infinite_carousel.dart';
 import '../navbar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Inicio extends StatefulWidget {
   @override
@@ -38,7 +39,7 @@ class _InicioState extends State<Inicio> {
 
   @override
   void dispose() {
-    _timer?.cancel(); // Detiene el temporizador cuando la pantalla se destruye
+    _timer?.cancel(); // Detiene el temporizador 
     _carouselController.dispose();
     super.dispose();
   }
@@ -52,12 +53,8 @@ class _InicioState extends State<Inicio> {
       ),
       body: Container(
         decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-                '../assets/images/inicio/background.jpg'), // Imagen de fondo
-            fit: BoxFit.cover,
-          ),
-        ),
+          color: Color.fromARGB(255, 232, 245, 236), // Color de fondo 
+        ),        
         child: Column(
           children: [
             Expanded(
@@ -71,8 +68,7 @@ class _InicioState extends State<Inicio> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(255, 241, 147, 181)
-                                .withOpacity(0.9),
-                            border: Border.all(color: Colors.black),
+                                .withOpacity(0.4),
                           ),
                           height: 400,
                           child: InfiniteCarousel.builder(
@@ -100,16 +96,19 @@ class _InicioState extends State<Inicio> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(255, 241, 147, 181)
-                                .withOpacity(0.9),
-                            border: Border.all(color: Colors.black),
+                                .withOpacity(0.4),
                           ),
-                          height: 400,
-                          child: const Center(
-                            child: Text(
-                              'Sumérgete en el bienestar',
-                              style: TextStyle(fontSize: 24),
-                              textAlign: TextAlign.center,
+                          height: 400,                          
+                          child: const Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Center(
+                              child: Text(
+                              'En Spa Sentirse Bien, mi mayor compromiso es ofrecerles un espacio donde la tranquilidad y la armonía se conviertan en parte de su rutina. Cada detalle ha sido pensado para que puedan desconectarse del mundo exterior y conectarse con su bienestar interior. Los invito a disfrutar de una experiencia única, donde el cuidado y la dedicación son la esencia de lo que hacemos.\nCon cariño,\nDra. Ana Felicidad',
+                              style: TextStyle(fontSize: 20),
+                              textAlign: TextAlign.justify,
                             ),
+                            )
+                           
                           ),
                         ),
                       ),
@@ -122,162 +121,217 @@ class _InicioState extends State<Inicio> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(255, 241, 147, 181)
-                                .withOpacity(0.9),
-                            border: Border.all(color: Colors.black),
+                                .withOpacity(0.4),
                           ),
                           height: 150,
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              'Misión\n Crear experiencias únicas y personalizadas, donde cada detalle está diseñado para que nuestros clientes logren desconectarse de la rutina y se sumerjan en un oasis de calma y relajación, en completa armonía con la naturaleza.',
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.justify,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 241, 147, 181)
-                                .withOpacity(0.9),
-                            border: Border.all(color: Colors.black),
-                          ),
-                          height: 150,
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              'Visión\n Ser el referente en bienestar, conocido por innovar en tratamientos que no solo cuidan el cuerpo, sino que también revitalizan el espíritu, ofreciendo un refugio perfecto para la mente y el cuerpo.',
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.justify,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 241, 147, 181)
-                                .withOpacity(0.9),
-                            border: Border.all(color: Colors.black),
-                          ),
-                          height: 150,
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              'Calidad\n Nos comprometemos a mantener los más altos estándares en cada servicio, asegurando que cada cliente reciba atención personalizada, utilizando productos de la mejor calidad y técnicas avanzadas en cada tratamiento.',
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.justify,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 216, 176, 190)
-                                .withOpacity(0.9),
-                            border: Border.all(color: Colors.black),
-                          ),
-                          height: 250,
-                          child: const Padding(
-                            padding: EdgeInsets.all(16.0), 
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    FaIcon(FontAwesomeIcons.whatsapp, color: Colors.white,),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      '+54 3716-616131',
-                                      style: TextStyle(fontSize: 16),
-                                    )
-                                  ],
+                                Align(
+                                  alignment: Alignment.center, // centra el texto
+                                  child: Text(
+                                    '¿Qué deseamos?',
+                                    style: GoogleFonts.dancingScript(
+                                      textStyle: const TextStyle(fontSize: 32, color: Colors.black),
+                                    ),
+                                  ),
+                               ),
+                                const SizedBox(height: 8),
+                                const Text(
+                                  'Crear experiencias únicas y personalizadas, donde cada detalle está diseñado para que nuestros clientes logren desconectarse de la rutina y se sumerjan en un oasis de calma y relajación, en completa armonía con la naturaleza.',
+                                  style: TextStyle(fontSize: 16),
+                                  textAlign: TextAlign.justify,
                                 ),
-                                SizedBox(height: 16),
-                                Row(
-                                  children: [
-                                    FaIcon(FontAwesomeIcons.xTwitter, color: Colors.white,),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      '@spa_sentirsebien',
-                                      style: TextStyle(fontSize: 16),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(height: 16),
-                                Row(
-                                  children: [
-                                    FaIcon(FontAwesomeIcons.instagram, color: Colors.white,),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      'spa_sentirsebien',
-                                      style: TextStyle(fontSize: 16),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(height: 16),
-                                Row(
-                                  children: [
-                                    FaIcon(FontAwesomeIcons.envelope, color: Colors.white,),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      'spa_sentirsebien@gmail.com',
-                                      style: TextStyle(fontSize: 16),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(height: 16),
-                                Row(
-                                  children: [
-                                    FaIcon(FontAwesomeIcons.locationDot, color: Colors.white,),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      'Calle French 440, Resistencia, Chaco',
-                                      style: TextStyle(fontSize: 16),
-                                    )
-                                  ],
-                                )
                               ],
                             ),
                           ),
-                        )
+                        ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: Container(
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 216, 176, 190),
-                            border: Border.all(color: Colors.black),
+                            color: const Color.fromARGB(255, 241, 147, 181)
+                                .withOpacity(0.4),
                           ),
-                          height: 250,
-                          child: GoogleMap(
-                            initialCameraPosition: CameraPosition(
-                              target: _spaLocation,
-                              zoom: 17.0,
+                          height: 150,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.center, // centra el texto
+                                  child: Text(
+                                    '¿Qué buscamos?',
+                                    style: GoogleFonts.dancingScript(
+                                      textStyle: const TextStyle(fontSize: 32, color: Colors.black),
+                                    ),
+                                  ),
+                               ),
+                                const SizedBox(height: 8),
+                                const Text(
+                                  'Ser los referentes en bienestar, conocidos por innovar en tratamientos que no solo cuidan el cuerpo, sino que también revitalizan el espíritu, ofreciendo un refugio perfecto para la mente y el cuerpo.',
+                                  style: TextStyle(fontSize: 16),
+                                  textAlign: TextAlign.justify,
+                                ),
+                              ],
                             ),
-                            markers: {
-                              Marker(
-                                markerId: const MarkerId('Spa'),
-                                position: _spaLocation,
-                                infoWindow: const InfoWindow(
-                                  title: 'Spa Sentirse Bien',
-                                  snippet: 'Calle French 440, Resistencia, Chaco'
-                                )
-                              )
-                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 241, 147, 181)
+                                .withOpacity(0.4),                            
+                          ),
+                          height: 150,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.center, // centra el texto
+                                  child: Text(
+                                    '¿Cómo lo haremos?',
+                                    style: GoogleFonts.dancingScript(
+                                      textStyle: const TextStyle(fontSize: 32, color: Colors.black),
+                                    ),
+                                  ),
+                               ),
+                                const SizedBox(height: 8),
+                                const Text(
+                                  'Nos comprometemos a mantener los más altos estándares en cada servicio, asegurando que cada cliente reciba atención personalizada, utilizando productos de la mejor calidad y técnicas avanzadas en cada tratamiento.',                                  style: TextStyle(fontSize: 16),
+                                  textAlign: TextAlign.justify,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 16),
+                  Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.center, // centra el texto
+                        child: Text(
+                          'Contáctanos',
+                          style: GoogleFonts.dancingScript(
+                            textStyle: const TextStyle(fontSize: 32, color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 216, 176, 190)
+                                    .withOpacity(0.9),
+                                border: Border.all(color: Colors.black),
+                              ),
+                              height: 250,
+                              child: const Padding(
+                                padding: EdgeInsets.all(16.0), 
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        FaIcon(FontAwesomeIcons.whatsapp, color: Colors.white,),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          '+54 8888-888888',
+                                          style: TextStyle(fontSize: 16),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 16),
+                                    Row(
+                                      children: [
+                                        FaIcon(FontAwesomeIcons.xTwitter, color: Colors.white,),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          '@spa_sentirsebien',
+                                          style: TextStyle(fontSize: 16),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 16),
+                                    Row(
+                                      children: [
+                                        FaIcon(FontAwesomeIcons.instagram, color: Colors.white,),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          'spa_sentirsebien',
+                                          style: TextStyle(fontSize: 16),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 16),
+                                    Row(
+                                      children: [
+                                        FaIcon(FontAwesomeIcons.envelope, color: Colors.white,),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          'spa_sentirsebien@gmail.com',
+                                          style: TextStyle(fontSize: 16),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 16),
+                                    Row(
+                                      children: [
+                                        FaIcon(FontAwesomeIcons.locationDot, color: Colors.white,),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          'Calle French 440, Resistencia, Chaco',
+                                          style: TextStyle(fontSize: 16),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 216, 176, 190),
+                                border: Border.all(color: Colors.black),
+                              ),
+                              height: 250,
+                              child: GoogleMap(
+                                initialCameraPosition: CameraPosition(
+                                  target: _spaLocation,
+                                  zoom: 17.0,
+                                ),
+                                markers: {
+                                  Marker(
+                                    markerId: const MarkerId('Spa'),
+                                    position: _spaLocation,
+                                    infoWindow: const InfoWindow(
+                                      title: 'Spa Sentirse Bien',
+                                      snippet: 'Calle French 440, Resistencia, Chaco'
+                                    )
+                                  )
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],                    
                   ),
                 ],
               ),
