@@ -60,4 +60,5 @@ class DefaultFirebaseOptions {
     authDomain: 'spa-sentirse-bien.firebaseapp.com',
     storageBucket: 'spa-sentirse-bien.appspot.com',
   );
+
 }

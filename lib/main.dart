@@ -1,9 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:proyecto_flutter/firebase_options.dart';
-import 'widgets/ingresar/ingresar.dart';
-import 'widgets/inicio/inicio.dart';
-import 'widgets/servicios/servicios.dart';
+import 'package:proyecto_flutter/widgets/ingresar_registrar/ingresar.dart';
+import 'package:proyecto_flutter/widgets/ingresar_registrar/registrar.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,13 +21,27 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute:
-          '/inicio', // Define la página de inicio como la ruta inicial
+      initialRoute: '/login',
       routes: {
-        '/inicio': (context) => Inicio(),
-        '/servicios': (context) => Servicios(),
-        '/ingresar': (context) => Ingresar(),
+        '/login': (context) => Ingresar(),
+        '/register': (context) => Registrar(),
+        '/home': (context) => HomePage(),
       },
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final String userType =
+        ModalRoute.of(context)!.settings.arguments as String;
+
+    return Scaffold(
+      appBar: AppBar(title: Text('Home')),
+      body: Center(
+        child: Text('Usuario: $userType'),
+      ),
     );
   }
 }
