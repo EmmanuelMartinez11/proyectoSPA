@@ -2,7 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:proyecto_flutter/widgets/ingresar_registrar/ingresar.dart';
 import 'package:proyecto_flutter/widgets/ingresar_registrar/registrar.dart';
+import 'package:proyecto_flutter/widgets/ingresar_registrar/tabla_clientes.dart';
 import 'firebase_options.dart';
+import 'widgets/inicio/inicio.dart';
+import 'widgets/servicios/servicios.dart';
+import 'widgets/servicios/comentarios.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,11 +25,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/login',
+      initialRoute:
+          '/inicio', // Define la página de inicio como la ruta inicial
       routes: {
-        '/login': (context) => Ingresar(),
-        '/register': (context) => Registrar(),
-        '/home': (context) => HomePage(),
+        '/inicio': (context) => Inicio(),
+        '/servicios': (context) => Servicios(),
+        '/ingresar': (context) => LoginScreen(),
+        '/registrar': (context) => Registrar(),
+        '/clientes': (context) => ClientesPage(),
+        '/comentarios': (context) => Comentarios(),
       },
     );
   }
@@ -40,7 +48,10 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Home')),
       body: Center(
-        child: Text('Usuario: $userType'),
+        child: Text(
+          'Tipo de Usuario: $userType',
+          style: TextStyle(fontSize: 24),
+        ),
       ),
     );
   }

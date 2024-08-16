@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_flutter/utils/crud_clientes.dart';
 
 class NavBar extends StatelessWidget {
   final List<Map<String, String>> navLinks = [
@@ -8,10 +9,11 @@ class NavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String userType =
+        GlobalUserType.getUserType(); // Obtener el tipo de usuario
+
     return LayoutBuilder(
       builder: (context, constraints) {
-        bool isSmallScreen = constraints.maxWidth <= 600;
-
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           height: 80, // Adjust height as needed
@@ -41,7 +43,8 @@ class NavBar extends StatelessWidget {
                           item["label"]!,
                           style: const TextStyle(
                             fontFamily: "Montserrat",
-                            color: Colors.black, // Adjust text color for visibility
+                            color: Colors
+                                .black, // Adjust text color for visibility
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             letterSpacing: 1.2,
@@ -51,6 +54,16 @@ class NavBar extends StatelessWidget {
                     ),
                   );
                 }).toList(),
+              ),
+              // Tipo de usuario
+              Text(
+                userType,
+                style: const TextStyle(
+                  fontFamily: "Montserrat",
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 1.2,
+                ),
               ),
               // Botón de Ingresar
               ElevatedButton(

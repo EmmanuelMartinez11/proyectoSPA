@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Registrar extends StatefulWidget {
@@ -8,31 +8,35 @@ class Registrar extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<Registrar> {
+  final _nombresController = TextEditingController();
+  final _apellidosController = TextEditingController();
+  final _fechaNacimientoController = TextEditingController();
   final _emailController = TextEditingController();
+  final _telefonoController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _userTypeController =
-      TextEditingController(); // Para definir el tipo de usuario
+  String _userType = 'cliente'; // Default to 'cliente'
 
   Future<void> _register() async {
     try {
-      // Crear usuario con email y contraseña
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
 
-      // Guardar información del usuario en Firestore
       await FirebaseFirestore.instance
-          .collection('users')
+          .collection('usuarios') // Cambio de 'clientes' a 'usuarios'
           .doc(userCredential.user!.uid)
           .set({
+        'nombres': _nombresController.text,
+        'apellidos': _apellidosController.text,
+        'fecha_nacimiento': _fechaNacimientoController.text,
         'email': _emailController.text,
-        'userType': _userTypeController.text, // "cliente" o "administrador"
+        'telefono': _telefonoController.text,
+        'tipo_usuario': _userType, // Agregar el tipo de usuario
       });
 
-      // Navegar a la página de inicio de sesión
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacementNamed(context, '/inicio');
     } catch (e) {
       print(e);
     }
@@ -41,28 +45,55 @@ class _RegisterPageState extends State<Registrar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Register')),
+      appBar: AppBar(title: Text('Registrar Usuario')),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
             TextField(
+              controller: _nombresController,
+              decoration: InputDecoration(labelText: 'Nombres'),
+            ),
+            TextField(
+              controller: _apellidosController,
+              decoration: InputDecoration(labelText: 'Apellidos'),
+            ),
+            TextField(
+              controller: _fechaNacimientoController,
+              decoration: InputDecoration(labelText: 'Fecha de Nacimiento'),
+            ),
+            TextField(
               controller: _emailController,
               decoration: InputDecoration(labelText: 'Email'),
+            ),
+            TextField(
+              controller: _telefonoController,
+              decoration: InputDecoration(labelText: 'Teléfono'),
             ),
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
-            TextField(
-              controller: _userTypeController,
-              decoration: InputDecoration(
-                  labelText: 'User Type (cliente/administrador)'),
+            DropdownButton<String>(
+              value: _userType,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _userType = newValue!;
+                });
+              },
+              items: <String>['cliente', 'administrador']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              hint: Text('Selecciona el tipo de usuario'),
             ),
             ElevatedButton(
               onPressed: _register,
-              child: Text('Register'),
+              child: Text('Registrar'),
             ),
           ],
         ),
