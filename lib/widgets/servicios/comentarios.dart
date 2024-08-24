@@ -42,7 +42,6 @@ class _CommentsPageState extends State<Comentarios> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Comentarios')),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(

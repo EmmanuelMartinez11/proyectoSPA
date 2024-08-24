@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:proyecto_flutter/utils/crud_clientes.dart';
+import 'package:proyecto_flutter/widgets/inicio_cliente/inicio_cliente.dart';
+import 'package:proyecto_flutter/widgets/inicio_personal/inicio_personal.dart';
 
 // App Colors
 class AppColors {
@@ -81,24 +83,47 @@ class _LoginScreenState extends State<LoginScreen> {
         password: _passwordController.text,
       );
 
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('usuarios')
+      // Buscar en la colección de clientes
+      DocumentSnapshot clienteDoc = await FirebaseFirestore.instance
+          .collection('clientes')
           .doc(userCredential.user!.uid)
           .get();
 
-      if (userDoc.exists) {
-        String userType = userDoc['tipo_usuario'];
-
-        // Almacenar el tipo de usuario en GlobalUserType
-        GlobalUserType.setUserType(userType);
-
-        // Redirigir a la pantalla principal
-        Navigator.pushReplacementNamed(context, '/inicio');
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Usuario no encontrado en Firestore')),
+      if (clienteDoc.exists) {
+        String nombres = clienteDoc['nombres'];
+        String apellidos = clienteDoc['apellidos'];
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ClienteScreen(nombres: nombres, apellidos: apellidos),
+          ),
         );
+        return;
       }
+
+      // Buscar en la colección de personal
+      DocumentSnapshot personalDoc = await FirebaseFirestore.instance
+          .collection('personal')
+          .doc(userCredential.user!.uid)
+          .get();
+
+      if (personalDoc.exists) {
+        String nombres = personalDoc['nombres'];
+        String apellidos = personalDoc['apellidos'];
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                PersonalScreen(nombres: nombres, apellidos: apellidos),
+          ),
+        );
+        return;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Usuario no encontrado en ninguna colección')),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: ${e.toString()}')),
