@@ -28,8 +28,7 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
     while (true) {
       final turnos = await turnoService.obtenerTurnosCliente(nombreCompleto);
       yield turnos;
-      await Future.delayed(
-          Duration(seconds: 10)); // Actualizar cada 10 segundos
+      await Future.delayed(Duration(seconds: 1)); // Actualizar cada 10 segundos
     }
   }
 
