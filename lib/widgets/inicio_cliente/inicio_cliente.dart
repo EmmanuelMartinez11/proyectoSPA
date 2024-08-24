@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'sacar_turno.dart';
 import 'turnos_cliente.dart';
 import 'proximo_turno.dart'; // Importa el nuevo archivo
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ClienteScreen extends StatelessWidget {
-  final String nombres;
-  final String apellidos;
+  final DocumentSnapshot clienteDoc;
 
-  ClienteScreen({required this.nombres, required this.apellidos});
+  ClienteScreen({required this.clienteDoc});
 
   @override
   Widget build(BuildContext context) {
+    // Accede a los datos del cliente desde clienteDoc
+    String nombres = clienteDoc['nombres'];
+    String apellidos = clienteDoc['apellidos'];
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Bienvenido $nombres $apellidos'),

@@ -90,13 +90,10 @@ class _LoginScreenState extends State<LoginScreen> {
           .get();
 
       if (clienteDoc.exists) {
-        String nombres = clienteDoc['nombres'];
-        String apellidos = clienteDoc['apellidos'];
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                ClienteScreen(nombres: nombres, apellidos: apellidos),
+            builder: (context) => ClienteScreen(clienteDoc: clienteDoc),
           ),
         );
         return;
@@ -109,13 +106,10 @@ class _LoginScreenState extends State<LoginScreen> {
           .get();
 
       if (personalDoc.exists) {
-        String nombres = personalDoc['nombres'];
-        String apellidos = personalDoc['apellidos'];
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                PersonalScreen(nombres: nombres, apellidos: apellidos),
+            builder: (context) => PersonalScreen(personalDoc: personalDoc),
           ),
         );
         return;

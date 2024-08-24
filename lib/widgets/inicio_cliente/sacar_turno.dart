@@ -31,6 +31,16 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
   }
 
   void _abrirModalSacarTurno(BuildContext context) async {
+    // Resetear variables al abrir el modal
+    _selectedServicio = null;
+    _selectedEspecialidad = null;
+    _selectedPersonal = null;
+    _selectedDate = null;
+    _selectedTime = null;
+    _especialidades = [];
+    _personales = [];
+    _horariosOcupados = [];
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -60,17 +70,23 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                         _selectedServicio = newValue;
                         _selectedEspecialidad = null;
                         _selectedPersonal = null;
+                        _especialidades = [];
+                        _personales = [];
+                        _horariosOcupados = [];
                       });
-                      _especialidades = await turnoService
-                          .obtenerEspecialidadesPorServicio(newValue!);
-                      _personales = (await turnoService.obtenerPersonalesPorRol(
-                              _mapServicioARol(newValue)))
-                          .map((doc) => {
-                                'id': doc.id,
-                                'nombre':
-                                    '${doc['nombres']} ${doc['apellidos']}',
-                              })
-                          .toList();
+                      if (newValue != null) {
+                        _especialidades = await turnoService
+                            .obtenerEspecialidadesPorServicio(newValue);
+                        _personales =
+                            (await turnoService.obtenerPersonalesPorRol(
+                                    _mapServicioARol(newValue)))
+                                .map((doc) => {
+                                      'id': doc.id,
+                                      'nombre':
+                                          '${doc['nombres']} ${doc['apellidos']}',
+                                    })
+                                .toList();
+                      }
                       setState(() {});
                     },
                   ),
@@ -87,6 +103,8 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                       onChanged: (String? newValue) {
                         setState(() {
                           _selectedEspecialidad = newValue;
+                          _selectedPersonal = null;
+                          _horariosOcupados = [];
                         });
                       },
                     ),
@@ -103,6 +121,7 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                       onChanged: (String? newValue) {
                         setState(() {
                           _selectedPersonal = newValue;
+                          _horariosOcupados = [];
                         });
                       },
                     ),
@@ -129,6 +148,8 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                             if (pickedTime != null) {
                               setState(() {
                                 _selectedTime = pickedTime;
+                                // Actualizar los horarios ocupados también al seleccionar la hora
+                                _updateHorariosOcupados();
                               });
                             }
                           },
