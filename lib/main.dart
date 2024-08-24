@@ -1,12 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:proyecto_flutter/widgets/ingresar_registrar/ingresar.dart';
-import 'package:proyecto_flutter/widgets/ingresar_registrar/registrar.dart';
-import 'package:proyecto_flutter/widgets/ingresar_registrar/tabla_clientes.dart';
 import 'firebase_options.dart';
 import 'widgets/inicio/inicio.dart';
 import 'widgets/servicios/servicios.dart';
 import 'widgets/servicios/comentarios.dart';
+import 'widgets/servicios/consultas.dart';
+import 'package:proyecto_flutter/widgets/ingresar_registrar/registrar_cliente.dart';
+import 'package:proyecto_flutter/widgets/ingresar_registrar/registrar_personal.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,9 +32,10 @@ class MyApp extends StatelessWidget {
         '/inicio': (context) => Inicio(),
         '/servicios': (context) => Servicios(),
         '/ingresar': (context) => LoginScreen(),
-        '/registrar': (context) => Registrar(),
-        '/clientes': (context) => ClientesPage(),
+        '/registrar_cliente': (context) => RegistrarCliente(),
+        '/registrar_personal': (context) => RegistrarPersonal(),
         '/comentarios': (context) => Comentarios(),
+        '/consultas': (context) => Consultas(),
       },
     );
   }

@@ -14,35 +14,76 @@ class GlobalUserType {
 class CrudOperations {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> addUser(String uid, Map<String, dynamic> data) async {
-    await _firestore.collection('usuarios').doc(uid).set(data);
+  // Agregar un cliente
+  Future<void> addClient(String uid, Map<String, dynamic> data) async {
+    await _firestore.collection('clientes').doc(uid).set(data);
   }
 
-  Future<void> updateUser(String uid, Map<String, dynamic> data) async {
-    await _firestore.collection('usuarios').doc(uid).update(data);
+  // Agregar un administrador
+  Future<void> addAdmin(String uid, Map<String, dynamic> data) async {
+    await _firestore.collection('administradores').doc(uid).set(data);
   }
 
-  Future<void> deleteUser(String uid) async {
+  // Actualizar un cliente
+  Future<void> updateClient(String uid, Map<String, dynamic> data) async {
+    await _firestore.collection('clientes').doc(uid).update(data);
+  }
+
+  // Actualizar un administrador
+  Future<void> updateAdmin(String uid, Map<String, dynamic> data) async {
+    await _firestore.collection('administradores').doc(uid).update(data);
+  }
+
+  // Eliminar un cliente
+  Future<void> deleteClient(String uid) async {
     if (uid == null) {
       print('UID es null');
       return;
     }
 
     try {
-      await _firestore.collection('usuarios').doc(uid).delete();
+      await _firestore.collection('clientes').doc(uid).delete();
     } catch (e) {
-      print('Error al eliminar el usuario: $e');
+      print('Error al eliminar el cliente: $e');
     }
   }
 
-  Stream<List<Map<String, dynamic>>> getUsers() {
+  // Eliminar un administrador
+  Future<void> deleteAdmin(String uid) async {
+    if (uid == null) {
+      print('UID es null');
+      return;
+    }
+
+    try {
+      await _firestore.collection('administradores').doc(uid).delete();
+    } catch (e) {
+      print('Error al eliminar el administrador: $e');
+    }
+  }
+
+  // Obtener clientes
+  Stream<List<Map<String, dynamic>>> getClients() {
     return _firestore
-        .collection('usuarios')
+        .collection('clientes')
         .snapshots()
         .map((snapshot) => snapshot.docs.map((doc) {
               final data = doc.data() as Map<String, dynamic>;
-              final uid = doc.id; // Asegúrate de incluir el ID del documento
-              data['uid'] = uid; // Agrega el ID al mapa de datos
+              final uid = doc.id;
+              data['uid'] = uid;
+              return data;
+            }).toList());
+  }
+
+  // Obtener administradores
+  Stream<List<Map<String, dynamic>>> getAdmins() {
+    return _firestore
+        .collection('administradores')
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) {
+              final data = doc.data() as Map<String, dynamic>;
+              final uid = doc.id;
+              data['uid'] = uid;
               return data;
             }).toList());
   }
