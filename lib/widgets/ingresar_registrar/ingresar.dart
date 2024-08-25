@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:proyecto_flutter/utils/crud_clientes.dart';
+import 'package:proyecto_flutter/widgets/ingresar_registrar/registrar_cliente.dart';
+import 'package:proyecto_flutter/widgets/ingresar_registrar/registrar_personal.dart';
 import 'package:proyecto_flutter/widgets/inicio_cliente/inicio_cliente.dart';
 import 'package:proyecto_flutter/widgets/inicio_personal/inicio_personal.dart';
 
@@ -126,6 +128,96 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  void _showRegisterOptions() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Registrarse como'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RegistrarCliente(),
+                    ),
+                  );
+                },
+                child: Text('Cliente'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _showPasswordDialog();
+                },
+                child: Text('Personal'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showPasswordDialog() {
+    final TextEditingController _passwordController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Contraseña requerida'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Ingrese la contraseña',
+                ),
+              ),
+              SizedBox(height: 10),
+              if (_passwordController.text.isNotEmpty &&
+                  _passwordController.text != '123456')
+                Text(
+                  'Contraseña incorrecta',
+                  style: TextStyle(color: Colors.red),
+                ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Cierra el dialogo
+              },
+              child: Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (_passwordController.text == '123456') {
+                  Navigator.pop(context); // Cierra el dialogo
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RegistrarPersonal(),
+                    ),
+                  );
+                } else {
+                  setState(() {});
+                }
+              },
+              child: Text('Aceptar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -205,7 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 16.0),
                         child: Text(
-                          'Email',
+                          'Correo electrónico',
                           style: ralewayStyle.copyWith(
                             fontSize: 12.0,
                             color: AppColors.blueDarkColor,
@@ -234,7 +326,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: AppColors.blueDarkColor,
                             ),
                             contentPadding: const EdgeInsets.only(top: 16.0),
-                            hintText: 'Enter Email',
+                            hintText: 'Ingresa tu correo electrónico',
                             hintStyle: ralewayStyle.copyWith(
                               fontWeight: FontWeight.w400,
                               color: AppColors.blueDarkColor.withOpacity(0.5),
@@ -247,7 +339,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 16.0),
                         child: Text(
-                          'Password',
+                          'Contraseña',
                           style: ralewayStyle.copyWith(
                             fontSize: 12.0,
                             color: AppColors.blueDarkColor,
@@ -290,7 +382,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: AppColors.blueDarkColor,
                             ),
                             contentPadding: const EdgeInsets.only(top: 16.0),
-                            hintText: 'Enter Password',
+                            hintText: 'Ingresá tu contraseña',
                             hintStyle: ralewayStyle.copyWith(
                               fontWeight: FontWeight.w400,
                               color: AppColors.blueDarkColor.withOpacity(0.5),
@@ -303,9 +395,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: _showRegisterOptions,
                           child: Text(
-                            'Forgot Password?',
+                            '¿No tienes cuenta? ¡Registrate!',
                             style: ralewayStyle.copyWith(
                               fontSize: 12.0,
                               color: AppColors.mainBlueColor,
