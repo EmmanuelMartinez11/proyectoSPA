@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
-import 'about.dart';
+import 'nosotros.dart';
 import 'carousel.dart';
 import 'contacto.dart';
-import '../navbar.dart'; // Asegúrate de que la ruta de importación sea correcta
+import '../navbar.dart'; 
 
 class Inicio extends StatefulWidget {
   @override
@@ -58,22 +58,22 @@ class _InicioState extends State<Inicio> {
                   child: CarouselWidget(
                     items: const [
                       {
-                        "image": "../assets/images/inicio/belleza.jpg",
+                        "image": "../assets/images/inicio/belleza.webp",
                         "title": "Belleza",
                         "description": "Realza tu belleza natural con nuestros tratamientos exclusivos."
                       },
                       {
-                        "image": "../assets/images/inicio/facial.jpg",
+                        "image": "../assets/images/inicio/facial.webp",
                         "title": "Tratamientos Faciales",
                         "description": "Revitaliza tu piel con nuestras técnicas avanzadas de cuidado facial."
                       },
                       {
-                        "image": "../assets/images/inicio/corporales.jpg",
+                        "image": "../assets/images/inicio/corporales.webp",
                         "title": "Tratamientos Corporales",
                         "description": "Cuida y tonifica tu cuerpo con nuestros tratamientos personalizados."
                       },
                       {
-                        "image": "../assets/images/inicio/masajes.jpg",
+                        "image": "../assets/images/inicio/masajes.webp",
                         "title": "Masajes",
                         "description": "Relájate y desconecta con nuestros masajes terapéuticos."
                       },
