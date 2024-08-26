@@ -48,7 +48,6 @@ class _InicioState extends State<Inicio> {
     return Scaffold(
       body: Stack(
         children: [
-          // Carrusel y demás contenido
           SingleChildScrollView(
             child: Column(
               children: [

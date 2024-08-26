@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:proyecto_flutter/utils/crud_clientes.dart';
+import 'package:provider/provider.dart';
+import '../user_state.dart'; 
 import 'package:proyecto_flutter/widgets/inicio_cliente/inicio_cliente.dart';
 import 'package:proyecto_flutter/widgets/inicio_personal/inicio_personal.dart';
 
@@ -77,8 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _signIn() async {
     try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
@@ -92,11 +92,14 @@ class _LoginScreenState extends State<LoginScreen> {
       if (clienteDoc.exists) {
         String nombres = clienteDoc['nombres'];
         String apellidos = clienteDoc['apellidos'];
+
+        // Actualizar el estado global del usuario
+        Provider.of<UserState>(context, listen: false).setNombre(nombres);
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                ClienteScreen(nombres: nombres, apellidos: apellidos),
+            builder: (context) => ClienteScreen(nombres: nombres, apellidos: apellidos),
           ),
         );
         return;
@@ -111,11 +114,14 @@ class _LoginScreenState extends State<LoginScreen> {
       if (personalDoc.exists) {
         String nombres = personalDoc['nombres'];
         String apellidos = personalDoc['apellidos'];
+
+        // Actualizar el estado global del usuario
+        Provider.of<UserState>(context, listen: false).setNombre(nombres);
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                PersonalScreen(nombres: nombres, apellidos: apellidos),
+            builder: (context) => PersonalScreen(nombres: nombres, apellidos: apellidos),
           ),
         );
         return;
