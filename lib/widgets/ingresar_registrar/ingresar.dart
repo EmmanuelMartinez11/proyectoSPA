@@ -2,17 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:proyecto_flutter/utils/crud_clientes.dart';
-import 'package:proyecto_flutter/widgets/ingresar_registrar/registrar_cliente.dart';
-import 'package:proyecto_flutter/widgets/ingresar_registrar/registrar_personal.dart';
 import 'package:proyecto_flutter/widgets/inicio_cliente/inicio_cliente.dart';
 import 'package:proyecto_flutter/widgets/inicio_personal/inicio_personal.dart';
+import 'package:proyecto_flutter/widgets/navbar.dart';
 
 // App Colors
 class AppColors {
-  static const Color backColor = Color(0xffF6F6F6);
-  static const Color mainBlueColor = Color(0xff005BE0);
-  static const Color blueDarkColor = Color(0xff252B5C);
+  static const Color backColor = Color.fromARGB(255, 234, 219, 219);
+  static const Color mainBlueColor = Color(0xFFCD4875);
+  static const Color blueDarkColor = Color.fromARGB(255, 25, 28, 56);
   static const Color textColor = Color(0xff53587A);
   static const Color whiteColor = Color(0xffFFFFFF);
 }
@@ -34,7 +32,7 @@ class ResponsiveWidget extends StatelessWidget {
   }) : super(key: key);
 
   static bool isSmallScreen(BuildContext context) {
-    return MediaQuery.of(context).size.width < 600;
+    return MediaQuery.of(context).size.width < 900;
   }
 
   static bool isLargeScreen(BuildContext context) {
@@ -73,6 +71,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
+  bool _showError =
+      false; // Agregado para controlar la visibilidad del mensaje de error
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -121,9 +121,9 @@ class _LoginScreenState extends State<LoginScreen> {
         SnackBar(content: Text('Usuario no encontrado en ninguna colección')),
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
-      );
+      setState(() {
+        _showError = true; // Muestra el mensaje de error
+      });
       print('Error durante el inicio de sesión: $e');
     }
   }
@@ -133,27 +133,76 @@ class _LoginScreenState extends State<LoginScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Registrarse como'),
+          title: Center(
+            child: Text(
+              'Registrarse como',
+              style: ralewayStyle.copyWith(
+                fontSize: 25.0,
+                color: AppColors.blueDarkColor,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RegistrarCliente(),
+              SizedBox(height: 16.0),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/registrar_cliente');
+                  },
+                  borderRadius: BorderRadius.circular(16.0),
+                  child: Ink(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 70.0, vertical: 10.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.0),
+                      color: AppColors.mainBlueColor,
                     ),
-                  );
-                },
-                child: Text('Cliente'),
+                    child: Center(
+                      child: Text(
+                        'Cliente',
+                        style: ralewayStyle.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.whiteColor,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  _showPasswordDialog();
-                },
-                child: Text('Personal'),
+              SizedBox(height: 16.0),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/registrar_personal');
+                  },
+                  borderRadius: BorderRadius.circular(16.0),
+                  child: Ink(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 70.0, vertical: 10.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.0),
+                      color: AppColors.mainBlueColor,
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Personal',
+                        style: ralewayStyle.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.whiteColor,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -200,12 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () {
                 if (_passwordController.text == '123456') {
                   Navigator.pop(context); // Cierra el dialogo
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RegistrarPersonal(),
-                    ),
-                  );
+                  Navigator.pushNamed(context, '/registrar_personal');
                 } else {
                   setState(() {});
                 }
@@ -225,6 +269,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.backColor,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80), // Altura del NavBar
+        child: NavBar(), // Usa el NavBar como appBar
+      ),
       body: SizedBox(
         height: height,
         width: width,
@@ -234,16 +282,11 @@ class _LoginScreenState extends State<LoginScreen> {
             if (!ResponsiveWidget.isSmallScreen(context))
               Expanded(
                 child: Container(
-                  height: height,
-                  color: AppColors.mainBlueColor,
-                  child: Center(
-                    child: Text(
-                      'AdminExpress',
-                      style: ralewayStyle.copyWith(
-                        fontSize: 48.0,
-                        color: AppColors.whiteColor,
-                        fontWeight: FontWeight.w800,
-                      ),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                          '../assets/images/ingresar/ingresar.jpg'), // Ruta de la imagen en tu proyecto
+                      fit: BoxFit.cover, // Ajusta la imagen al contenedor
                     ),
                   ),
                 ),
@@ -266,131 +309,41 @@ class _LoginScreenState extends State<LoginScreen> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: 'Let’s',
+                              text: 'Ingresá',
                               style: ralewayStyle.copyWith(
                                 fontSize: 25.0,
                                 color: AppColors.blueDarkColor,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                            TextSpan(
-                              text: ' Sign In 👇',
-                              style: ralewayStyle.copyWith(
                                 fontWeight: FontWeight.w800,
-                                color: AppColors.blueDarkColor,
-                                fontSize: 25.0,
                               ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: height * 0.02),
-                      Text(
-                        'Hey, Enter your details to get sign in \nto your account.',
-                        style: ralewayStyle.copyWith(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textColor,
-                        ),
-                      ),
                       SizedBox(height: height * 0.064),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: Text(
-                          'Correo electrónico',
-                          style: ralewayStyle.copyWith(
-                            fontSize: 12.0,
-                            color: AppColors.blueDarkColor,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 6.0),
-                      Container(
-                        height: 50.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16.0),
-                          color: AppColors.whiteColor,
-                        ),
-                        child: TextFormField(
-                          controller: _emailController,
-                          style: ralewayStyle.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.blueDarkColor,
-                            fontSize: 12.0,
-                          ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            prefixIcon: Icon(
-                              Icons.email,
-                              color: AppColors.blueDarkColor,
-                            ),
-                            contentPadding: const EdgeInsets.only(top: 16.0),
-                            hintText: 'Ingresa tu correo electrónico',
-                            hintStyle: ralewayStyle.copyWith(
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.blueDarkColor.withOpacity(0.5),
-                              fontSize: 12.0,
-                            ),
-                          ),
-                        ),
+                      buildTextField(
+                        'Correo electrónico',
+                        _emailController,
+                        TextInputType.emailAddress,
+                        icon: Icons.email,
                       ),
                       SizedBox(height: height * 0.014),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: Text(
-                          'Contraseña',
-                          style: ralewayStyle.copyWith(
-                            fontSize: 12.0,
-                            color: AppColors.blueDarkColor,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                      buildTextField(
+                        'Contraseña',
+                        _passwordController,
+                        TextInputType.text,
+                        obscureText: _obscurePassword,
+                        icon: Icons.lock,
                       ),
-                      const SizedBox(height: 6.0),
-                      Container(
-                        height: 50.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16.0),
-                          color: AppColors.whiteColor,
-                        ),
-                        child: TextFormField(
-                          controller: _passwordController,
-                          style: ralewayStyle.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.blueDarkColor,
-                            fontSize: 12.0,
-                          ),
-                          obscureText: _obscurePassword,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _obscurePassword
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                color: AppColors.blueDarkColor,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _obscurePassword = !_obscurePassword;
-                                });
-                              },
-                            ),
-                            prefixIcon: Icon(
-                              Icons.lock,
-                              color: AppColors.blueDarkColor,
-                            ),
-                            contentPadding: const EdgeInsets.only(top: 16.0),
-                            hintText: 'Ingresá tu contraseña',
-                            hintStyle: ralewayStyle.copyWith(
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.blueDarkColor.withOpacity(0.5),
-                              fontSize: 12.0,
-                            ),
+                      // Mensaje de error
+                      if (_showError)
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(top: 8.0, bottom: 16.0),
+                          child: Text(
+                            'Usuario o contraseña incorrecto',
+                            style: TextStyle(color: Colors.red, fontSize: 14.0),
                           ),
                         ),
-                      ),
                       SizedBox(height: height * 0.03),
                       Align(
                         alignment: Alignment.centerRight,
@@ -421,7 +374,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             child: Center(
                               child: Text(
-                                'Sign In',
+                                'Ingresar',
                                 style: ralewayStyle.copyWith(
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.whiteColor,
@@ -440,6 +393,71 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildTextField(String labelText, TextEditingController controller,
+      TextInputType keyboardType,
+      {bool obscureText = false,
+      bool readOnly = false,
+      VoidCallback? onTap,
+      IconData? icon}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          labelText,
+          style: ralewayStyle.copyWith(
+            fontSize: 12.0,
+            color: AppColors.blueDarkColor,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: 6.0),
+        Container(
+          width:
+              double.infinity, // Asegura que el Container ocupe todo el ancho
+          height: 50.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.0),
+            color: AppColors.whiteColor,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 4,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          child: TextFormField(
+            controller: controller,
+            style: ralewayStyle.copyWith(
+              fontWeight: FontWeight.w400,
+              color: AppColors.blueDarkColor,
+              fontSize: 12.0,
+            ),
+            keyboardType: keyboardType,
+            obscureText: obscureText,
+            readOnly: readOnly,
+            onTap: onTap,
+            decoration: InputDecoration(
+              prefixIcon: icon != null
+                  ? Icon(icon, color: AppColors.blueDarkColor)
+                  : null,
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(
+                  vertical: 16.0), // Ajusta el padding vertical
+              hintText: 'Ingresa $labelText',
+              hintStyle: ralewayStyle.copyWith(
+                fontWeight: FontWeight.w400,
+                color: AppColors.blueDarkColor.withOpacity(0.5),
+                fontSize: 12.0,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
