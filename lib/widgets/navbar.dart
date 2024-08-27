@@ -1,39 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../widgets/inicio_cliente/inicio_cliente.dart'; 
+import '../widgets/inicio_cliente/inicio_cliente.dart';
 
-class NavBar extends StatelessWidget {
+class NavBar extends StatefulWidget {
+  final GlobalKey? quienesSomosKey;
+  final GlobalKey? noticiasKey;
+
+  NavBar({this.quienesSomosKey, this.noticiasKey});
+
+  @override
+  _NavBarState createState() => _NavBarState();
+}
+
+class _NavBarState extends State<NavBar> {
   final List<Map<String, String>> navLinks = [
     {"label": "Inicio", "route": "/inicio"},
     {"label": "Servicios", "route": "/servicios"},
+    {"label": "Quiénes Somos", "route": "quienes-somos"},
+    {"label": "Noticias", "route": "noticias"},
   ];
 
-  // Define el estilo común para el botón y el nombre del usuario
-  TextStyle _navBarTextStyle() {
-    return const TextStyle(
-      fontFamily: "Montserrat",
-      fontSize: 16,
-      fontWeight: FontWeight.bold,
-      letterSpacing: 1.2,
-      color: Colors.white,
-    );
-  }
-
-  // Define el estilo común para el botón y el nombre del usuario
-  ButtonStyle _navBarButtonStyle() {
-    return ElevatedButton.styleFrom(
-      backgroundColor: Colors.pinkAccent,
-      foregroundColor: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-    );
-  }
-
   Future<String> _getUserName(String uid) async {
-    // Buscar en la colección de clientes
     DocumentSnapshot clienteDoc = await FirebaseFirestore.instance
         .collection('clientes')
         .doc(uid)
@@ -45,7 +33,6 @@ class NavBar extends StatelessWidget {
       return '$nombres $apellidos';
     }
 
-    // Buscar en la colección de personal
     DocumentSnapshot personalDoc = await FirebaseFirestore.instance
         .collection('personal')
         .doc(uid)
@@ -58,6 +45,24 @@ class NavBar extends StatelessWidget {
     }
 
     return 'Usuario';
+  }
+
+  void _signOut() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushNamedAndRemoveUntil('/inicio', (route) => false);
+  }
+
+  void _scrollToSection(String route) {
+    switch (route) {
+      case 'quienes-somos':
+        Scrollable.ensureVisible(widget.quienesSomosKey?.currentContext ?? context);
+        break;
+      case 'noticias':
+        Scrollable.ensureVisible(widget.noticiasKey?.currentContext ?? context);
+        break;
+      default:
+        Navigator.pushNamed(context, route);
+    }
   }
 
   @override
@@ -80,13 +85,11 @@ class NavBar extends StatelessWidget {
               Row(
                 children: navLinks.map((item) {
                   return Padding(
-                    padding: EdgeInsets.only(left: 20),
+                    padding: const EdgeInsets.only(left: 20),
                     child: MouseRegion(
                       cursor: SystemMouseCursors.click,
                       child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, item["route"]!);
-                        },
+                        onTap: () => _scrollToSection(item["route"]!),
                         child: Text(
                           item["label"]!,
                           style: _navBarTextStyle(),
@@ -96,37 +99,66 @@ class NavBar extends StatelessWidget {
                   );
                 }).toList(),
               ),
-              if (user != null) // Verifica si el usuario está autenticado
+              if (user != null)
                 FutureBuilder<String>(
                   future: _getUserName(user.uid),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     } else if (snapshot.hasError) {
-                      return Text('Error al cargar nombre');
+                      return const Text('Error al cargar nombre');
                     } else {
                       String userName = snapshot.data ?? 'Usuario';
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ClienteScreen(
-                                nombres: userName.split(' ')[0],
-                                apellidos: userName.split(' ').length > 1 ? userName.split(' ')[1] : '',
-                              ),
-                            ),
-                          );
+                      return PopupMenuButton<String>(
+                        onSelected: (value) {
+                          if (value == 'logout') {
+                            _signOut();
+                          }
                         },
+                        itemBuilder: (context) => [
+                          PopupMenuItem<String>(
+                            value: 'profile',
+                            child: ListTile(
+                              title: Text(userName),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ClienteScreen(
+                                      nombres: userName.split(' ')[0],
+                                      apellidos: userName.split(' ').length > 1
+                                          ? userName.split(' ')[1]
+                                          : '',
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          const PopupMenuItem<String>(
+                            value: 'logout',
+                            child: ListTile(
+                              title: Text('Cerrar Sesión'),
+                              leading: Icon(Icons.exit_to_app),
+                            ),
+                          ),
+                        ],
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.pinkAccent,
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                          child: Text(
-                            userName, // Muestra el nombre del usuario
-                            style: _navBarTextStyle(),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 12),
+                          child: Row(
+                            children: [
+                              Text(
+                                userName,
+                                style: _navBarTextStyle(),
+                              ),
+                              const SizedBox(width: 10),
+                              const Icon(Icons.arrow_drop_down, color: Colors.white),
+                            ],
                           ),
                         ),
                       );
@@ -138,7 +170,15 @@ class NavBar extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(context, "/ingresar");
                   },
-                  style: _navBarButtonStyle(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.pinkAccent,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                   child: const Text(
                     'Ingresar',
                     style: TextStyle(
@@ -152,6 +192,16 @@ class NavBar extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  TextStyle _navBarTextStyle() {
+    return const TextStyle(
+      fontFamily: "Montserrat",
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      letterSpacing: 1.2,
+      color: Colors.white,
     );
   }
 }

@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../inicio/InfoBox.dart';
 
 class AboutSection extends StatelessWidget {
+  const AboutSection({Key? key}) : super(key: key); // Acepta el parámetro key
+
   @override
   Widget build(BuildContext context) {
     return Container(

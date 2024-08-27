@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
+import 'carousel.dart'; // Asegúrate de que esta ruta es correcta
 import 'nosotros.dart';
-import 'carousel.dart';
 import 'contacto.dart';
 import '../navbar.dart'; 
 
@@ -13,12 +13,18 @@ class Inicio extends StatefulWidget {
 }
 
 class _InicioState extends State<Inicio> {
+  late InfiniteScrollController _carouselController;
   final ScrollController _scrollController = ScrollController();
   bool _showNavBar = true;
 
-   @override
+  // GlobalKeys para secciones
+  final GlobalKey _quienesSomosKey = GlobalKey();
+  final GlobalKey _noticiasKey = GlobalKey();
+
+  @override
   void initState() {
     super.initState();
+    _carouselController = InfiniteScrollController();
     _scrollController.addListener(() {
       if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
         if (_showNavBar) {
@@ -38,10 +44,10 @@ class _InicioState extends State<Inicio> {
   
   @override
   void dispose() {
+    _carouselController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +55,7 @@ class _InicioState extends State<Inicio> {
       body: Stack(
         children: [
           SingleChildScrollView(
+            controller: _scrollController, // Asegúrate de pasar el controlador aquí
             child: Column(
               children: [
                 SizedBox(
@@ -77,19 +84,30 @@ class _InicioState extends State<Inicio> {
                         "description": "Relájate y desconecta con nuestros masajes terapéuticos."
                       },
                     ],
-                    carouselController: InfiniteScrollController(),
+                    carouselController: _carouselController,
                   ),
                 ),
                 const SizedBox(height: 20),
-                AboutSection(),
+                AboutSection(key: _quienesSomosKey),
+                // Sección de Noticias
+                const SizedBox(height: 20),
+                Container(
+                  key: _noticiasKey,
+                  padding: const EdgeInsets.all(20),
+                  color: Colors.blueGrey[100],
+                  child: const Text(
+                    'Noticias',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ),
                 const SizedBox(height: 20),
                 ContactSection(
                   spaLocation: const LatLng(-27.450953544514192, -58.97908033769105),
                 ),
+                
               ],
             ),
           ),
-          // NavBar en la parte superior
           Positioned(
             top: 0.0,
             left: 0.0,
@@ -98,8 +116,11 @@ class _InicioState extends State<Inicio> {
               opacity: _showNavBar ? 1.0 : 0.0,
               duration: const Duration(milliseconds: 300),
               child: Container(
-                color: Colors.transparent, // Fondo transparente para el navbar
-                child: NavBar(), 
+                color: Colors.transparent,
+                child: NavBar(
+                  quienesSomosKey: _quienesSomosKey,
+                  noticiasKey: _noticiasKey,
+                ), 
               ),
             ),
           ),

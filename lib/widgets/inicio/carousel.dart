@@ -7,7 +7,7 @@ class CarouselWidget extends StatelessWidget {
   final List<Map<String, String>> items;
   final InfiniteScrollController carouselController;
 
-  CarouselWidget({required this.items, required this.carouselController});
+  const CarouselWidget({required this.items, required this.carouselController});
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +84,10 @@ class CarouselWidget extends StatelessWidget {
           child: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white, size: 50),
             onPressed: () {
-              carouselController.previousItem();
+              // Verifica que el controlador esté definido
+              if (carouselController != null) {
+                carouselController.previousItem();
+              }
             },
           ),
         ),
@@ -94,7 +97,10 @@ class CarouselWidget extends StatelessWidget {
           child: IconButton(
             icon: const Icon(Icons.arrow_forward, color: Colors.white, size: 50),
             onPressed: () {
-              carouselController.nextItem();
+              // Verifica que el controlador esté definido
+              if (carouselController != null) {
+                carouselController.nextItem();
+              }
             },
           ),
         ),
