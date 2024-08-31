@@ -29,7 +29,7 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
       final turnos = await turnoService.obtenerTurnosCliente(nombreCompleto);
       yield turnos;
       await Future.delayed(
-          Duration(seconds: 10)); // Actualizar cada 10 segundos
+          const Duration(seconds: 10)); // Actualizar cada 10 segundos
     }
   }
 
@@ -39,7 +39,7 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
       stream: _turnosStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.hasError) {
@@ -47,7 +47,7 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
         }
 
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No tienes turnos registrados.'));
+          return const Center(child: Text('No tienes turnos registrados.'));
         }
 
         final turnos = snapshot.data!;
@@ -59,8 +59,10 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
           return fechaB.compareTo(fechaA); // Orden descendente
         });
 
+        
+
         return DataTable(
-          columns: [
+          columns: const [
             DataColumn(label: Text('Fecha')),
             DataColumn(label: Text('Hora')),
             DataColumn(label: Text('Servicio')),
@@ -89,7 +91,7 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
                       if (fecha.isAfter(
                           ahora)) // Solo muestra el ícono si el turno es en el futuro
                         IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           onPressed: () async {
                             await turnoService.cancelarTurno(turnoId);
                           },

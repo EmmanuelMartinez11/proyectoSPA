@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
-import 'carousel.dart'; // Asegúrate de que esta ruta es correcta
+import 'carousel.dart';
 import 'nosotros.dart';
 import 'contacto.dart';
 import '../navbar.dart'; 
@@ -17,9 +17,8 @@ class _InicioState extends State<Inicio> {
   final ScrollController _scrollController = ScrollController();
   bool _showNavBar = true;
 
-  // GlobalKeys para secciones
+
   final GlobalKey _quienesSomosKey = GlobalKey();
-  final GlobalKey _noticiasKey = GlobalKey();
 
   @override
   void initState() {
@@ -87,20 +86,9 @@ class _InicioState extends State<Inicio> {
                     carouselController: _carouselController,
                   ),
                 ),
-                const SizedBox(height: 20),
+
                 AboutSection(key: _quienesSomosKey),
-                // Sección de Noticias
-                const SizedBox(height: 20),
-                Container(
-                  key: _noticiasKey,
-                  padding: const EdgeInsets.all(20),
-                  color: Colors.blueGrey[100],
-                  child: const Text(
-                    'Noticias',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(height: 20),
+
                 ContactSection(
                   spaLocation: const LatLng(-27.450953544514192, -58.97908033769105),
                 ),
@@ -119,7 +107,6 @@ class _InicioState extends State<Inicio> {
                 color: Colors.transparent,
                 child: NavBar(
                   quienesSomosKey: _quienesSomosKey,
-                  noticiasKey: _noticiasKey,
                 ), 
               ),
             ),

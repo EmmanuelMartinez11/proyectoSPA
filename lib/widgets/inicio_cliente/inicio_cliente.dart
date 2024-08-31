@@ -28,14 +28,15 @@ class ClienteScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16.0), // Añade un poco de espacio alrededor del mensaje
               child: Text(
                 'Bienvenido $nombres $apellidos',
-                style: GoogleFonts.dancingScript(
-                  fontSize: 46,
+                style: GoogleFonts.greatVibes(
+                  fontSize: 60,
                   fontWeight: FontWeight.bold,
                   color: Colors.orange.shade800,
                 ),
                 textAlign: TextAlign.center,
               ),
             ),
+            const SizedBox(height: 30),
             Expanded(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,9 +45,9 @@ class ClienteScreen extends StatelessWidget {
                     flex: 1,
                     child: Column(
                       children: <Widget>[
-                        SacarTurnoButton(nombres: nombres, apellidos: apellidos),
-                        SizedBox(height: 20),
                         ProximoTurno(nombres: nombres, apellidos: apellidos),
+                        const SizedBox(height: 20),
+                        SacarTurnoButton(nombres: nombres, apellidos: apellidos),
                       ],
                     ),
                   ),

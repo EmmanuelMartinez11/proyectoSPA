@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/inicio_cliente/inicio_cliente.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NavBar extends StatefulWidget {
   final GlobalKey? quienesSomosKey;
@@ -195,13 +196,19 @@ class _NavBarState extends State<NavBar> {
     );
   }
 
-  TextStyle _navBarTextStyle() {
-    return const TextStyle(
-      fontFamily: "Montserrat",
-      fontSize: 16,
-      fontWeight: FontWeight.bold,
-      letterSpacing: 1.2,
-      color: Colors.white,
-    );
-  }
+TextStyle _navBarTextStyle() {
+  return GoogleFonts.cardo(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    letterSpacing: 1.2,
+    color: Colors.white,
+    shadows: [
+      const Shadow(
+        blurRadius: 2.0,
+        color: Colors.black,
+        offset: Offset(2.0, 2.0),
+      ),
+    ],
+  );
+}
 }

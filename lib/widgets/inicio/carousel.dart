@@ -34,8 +34,8 @@ class CarouselWidget extends StatelessWidget {
                     children: [
                       Text(
                         items[itemIndex]["title"]!,
-                        style: GoogleFonts.notoSerif(
-                          fontSize: 80,
+                        style: GoogleFonts.greatVibes(
+                          fontSize: 100,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                           shadows: [
@@ -47,11 +47,10 @@ class CarouselWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 10),
                       Text(
                         items[itemIndex]["description"]!,
-                        style: GoogleFonts.notoSerif(
-                          fontSize: 20,
+                        style: GoogleFonts.courgette(
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                           shadows: [
@@ -64,7 +63,7 @@ class CarouselWidget extends StatelessWidget {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 30),
                       HoverButton(
                         onPressed: () {
                           Navigator.pushNamed(context, "/servicios");
@@ -84,11 +83,8 @@ class CarouselWidget extends StatelessWidget {
           child: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white, size: 50),
             onPressed: () {
-              // Verifica que el controlador esté definido
-              if (carouselController != null) {
-                carouselController.previousItem();
-              }
-            },
+              carouselController.previousItem();
+              },
           ),
         ),
         Positioned(
@@ -97,10 +93,7 @@ class CarouselWidget extends StatelessWidget {
           child: IconButton(
             icon: const Icon(Icons.arrow_forward, color: Colors.white, size: 50),
             onPressed: () {
-              // Verifica que el controlador esté definido
-              if (carouselController != null) {
-                carouselController.nextItem();
-              }
+              carouselController.nextItem();
             },
           ),
         ),
