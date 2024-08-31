@@ -43,7 +43,7 @@ class AboutSection extends StatelessWidget {
           Text(
             'Todo el mundo busca lugares donde relajarse y recargar energía. En nuestro centro de bienestar nos damos cita al silencio, la energía, la belleza y la vitalidad. Los tratamientos que ofrecemos refrescarán tanto tu cuerpo como tu alma.\nEstaremos encantados de recibirte',
             style: GoogleFonts.cardo(
-              fontSize: 16,
+              fontSize: 18,
               color: Colors.grey.shade800,
             ),
             textAlign: TextAlign.center,
