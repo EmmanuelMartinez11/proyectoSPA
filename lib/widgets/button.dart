@@ -28,7 +28,7 @@ class _HoverButtonState extends State<HoverButton> {
           onPressed: widget.onPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: _isHovered ? const Color.fromARGB(255, 255, 215, 0) : Colors.white,
-            foregroundColor: _isHovered ? Colors.black : Colors.black, // Opcional para cambiar el color del texto
+            foregroundColor: _isHovered ? Colors.black : Colors.black, 
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),

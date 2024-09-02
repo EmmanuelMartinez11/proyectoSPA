@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_flutter/utils/crud_turnos.dart';
+import '../button.dart';
 
 class SacarTurnoButton extends StatefulWidget {
   final String nombres;
@@ -24,9 +25,9 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return HoverButton(
       onPressed: () => _abrirModalSacarTurno(context),
-      child: Text('Sacar Turno'),
+      text: ('Sacar Turno'),
     );
   }
 
@@ -45,7 +46,7 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Sacar Turno'),
+          title: const Text('Sacar Turno'),
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return Column(
@@ -53,7 +54,7 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                 children: <Widget>[
                   DropdownButton<String>(
                     value: _selectedServicio,
-                    hint: Text('Selecciona un servicio'),
+                    hint: const Text('Selecciona un servicio'),
                     items: [
                       'Masajes',
                       'Belleza',
@@ -93,7 +94,7 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                   if (_selectedServicio != null)
                     DropdownButton<String>(
                       value: _selectedEspecialidad,
-                      hint: Text('Selecciona una especialidad'),
+                      hint: const Text('Selecciona una especialidad'),
                       items: _especialidades.map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -111,7 +112,7 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                   if (_selectedEspecialidad != null)
                     DropdownButton<String>(
                       value: _selectedPersonal,
-                      hint: Text('Selecciona el personal a cargo'),
+                      hint: const Text('Selecciona el personal a cargo'),
                       items: _personales.map((personal) {
                         return DropdownMenuItem<String>(
                           value: personal['id'],
@@ -128,21 +129,23 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                   if (_selectedPersonal != null)
                     Column(
                       children: [
-                        ElevatedButton(
-                          onPressed: () async {
-                            DateTime? pickedDate = await _selectDate(context);
-                            if (pickedDate != null) {
-                              setState(() {
-                                _selectedDate = pickedDate;
-                                _updateHorariosOcupados();
-                              });
-                            }
-                          },
-                          child: Text(_selectedDate == null
-                              ? 'Selecciona la fecha'
-                              : '${_selectedDate!.toLocal()}'.split(' ')[0]),
-                        ),
-                        ElevatedButton(
+                        const SizedBox(height: 8),
+                       HoverButton(
+                        onPressed: () async {
+                          DateTime? pickedDate = await _selectDate(context);
+                          if (pickedDate != null) {
+                            setState(() {
+                              _selectedDate = pickedDate;
+                              _updateHorariosOcupados();
+                            });
+                          }
+                        },
+                        text: _selectedDate == null
+                            ? 'Selecciona la fecha'
+                            : '${_selectedDate!.toLocal()}'.split(' ')[0],
+                      ),
+                        const SizedBox(height: 8),
+                        HoverButton(
                           onPressed: () async {
                             TimeOfDay? pickedTime = await _selectTime(context);
                             if (pickedTime != null) {
@@ -153,9 +156,9 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                               });
                             }
                           },
-                          child: Text(_selectedTime == null
+                          text: _selectedTime == null
                               ? 'Selecciona la hora'
-                              : _selectedTime!.format(context)),
+                              : _selectedTime!.format(context),
                         ),
                       ],
                     ),
@@ -168,7 +171,7 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
             ),
             TextButton(
               onPressed: () async {
@@ -188,7 +191,7 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                   // Validar que la fecha y hora seleccionadas sean futuras
                   if (fechaHoraTurno.isBefore(DateTime.now())) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content:
                             Text('No puedes reservar un turno en el pasado.'),
                       ),
@@ -214,20 +217,20 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                     Navigator.of(context).pop();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text('El turno ya está ocupado'),
                       ),
                     );
                   }
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Complete todos los campos'),
                     ),
                   );
                 }
               },
-              child: Text('Reservar'),
+              child: const Text('Reservar'),
             ),
           ],
         );
@@ -289,7 +292,7 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: Text('Selecciona la hora'),
+          title: const Text('Selecciona la hora'),
           children: availableTimes.map((TimeOfDay time) {
             final isOcupado = _horariosOcupados.contains(time);
             return SimpleDialogOption(
