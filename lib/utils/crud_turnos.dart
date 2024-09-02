@@ -25,6 +25,28 @@ class TurnoService {
     }
   }
 
+  Future<List<Map<String, dynamic>>> obtenerTurnosPersonal(
+      String nombreCompleto) async {
+    try {
+      QuerySnapshot querySnapshot = await turnosCollection
+          .where('personal_a_cargo', isEqualTo: nombreCompleto)
+          .get();
+
+      return querySnapshot.docs.map((doc) {
+        return {
+          'id': doc.id,
+          'fecha_turno': doc['fecha_turno'],
+          'servicio': doc['servicio'],
+          'especialidad': doc['especialidad'],
+          'cliente': doc['cliente'],
+        };
+      }).toList();
+    } catch (e) {
+      print('Error al obtener los turnos del personal: $e');
+      return [];
+    }
+  }
+
   Future<List<String>> obtenerEspecialidadesPorServicio(String servicio) async {
     Map<String, List<String>> especialidades = {
       'Masajes': [
@@ -113,6 +135,32 @@ class TurnoService {
       }).toList();
     } catch (e) {
       print('Error al obtener los turnos del cliente: $e');
+      return [];
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> obtenerTurnosPorFechaYPersonal(
+      DateTime fecha, String nombreCompleto) async {
+    try {
+      QuerySnapshot querySnapshot = await turnosCollection
+          .where('personal_a_cargo', isEqualTo: nombreCompleto)
+          .where('fecha_turno',
+              isGreaterThanOrEqualTo: Timestamp.fromDate(fecha))
+          .where('fecha_turno',
+              isLessThan: Timestamp.fromDate(fecha.add(Duration(days: 1))))
+          .get();
+
+      return querySnapshot.docs.map((doc) {
+        return {
+          'id': doc.id,
+          'fecha_turno': doc['fecha_turno'],
+          'servicio': doc['servicio'],
+          'especialidad': doc['especialidad'],
+          'cliente': doc['cliente'],
+        };
+      }).toList();
+    } catch (e) {
+      print('Error al obtener los turnos por fecha y personal: $e');
       return [];
     }
   }

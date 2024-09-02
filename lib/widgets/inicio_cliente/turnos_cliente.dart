@@ -59,8 +59,6 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
           return fechaB.compareTo(fechaA); // Orden descendente
         });
 
-        
-
         return DataTable(
           columns: const [
             DataColumn(label: Text('Fecha')),
