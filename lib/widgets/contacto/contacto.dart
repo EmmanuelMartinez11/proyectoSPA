@@ -6,8 +6,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ContactSection extends StatelessWidget {
   final LatLng spaLocation;
+  final Key? key;
 
-  ContactSection({required this.spaLocation});
+  ContactSection({
+    required this.spaLocation,
+    this.key,
+  });
 
   void _launchURL(String url) async {
     if (await canLaunch(url)) {
@@ -50,7 +54,8 @@ class ContactSection extends StatelessWidget {
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        const FaIcon(FontAwesomeIcons.whatsapp, color: Colors.black),
+                        const FaIcon(FontAwesomeIcons.whatsapp,
+                            color: Colors.black),
                         const SizedBox(width: 8),
                         GestureDetector(
                           onTap: () => _launchURL('https://web.whatsapp.com/'),
@@ -64,7 +69,8 @@ class ContactSection extends StatelessWidget {
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        const FaIcon(FontAwesomeIcons.twitter, color: Colors.black),
+                        const FaIcon(FontAwesomeIcons.twitter,
+                            color: Colors.black),
                         const SizedBox(width: 8),
                         GestureDetector(
                           onTap: () => _launchURL('https://x.com/'),
@@ -78,7 +84,8 @@ class ContactSection extends StatelessWidget {
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        const FaIcon(FontAwesomeIcons.instagram, color: Colors.black),
+                        const FaIcon(FontAwesomeIcons.instagram,
+                            color: Colors.black),
                         const SizedBox(width: 8),
                         GestureDetector(
                           onTap: () => _launchURL('https://www.instagram.com/'),
@@ -92,10 +99,12 @@ class ContactSection extends StatelessWidget {
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        const FaIcon(FontAwesomeIcons.envelope, color: Colors.black),
+                        const FaIcon(FontAwesomeIcons.envelope,
+                            color: Colors.black),
                         const SizedBox(width: 8),
                         GestureDetector(
-                          onTap: () => _launchURL('mailto:info@spasentirsebien.com'),
+                          onTap: () =>
+                              _launchURL('mailto:info@spasentirsebien.com'),
                           child: const Text(
                             'info@spasentirsebien.com',
                             style: TextStyle(fontSize: 16),
