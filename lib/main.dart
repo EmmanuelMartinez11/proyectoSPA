@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // Añadir Provider
 import 'firebase_options.dart';
 import 'widgets/inicio/inicio.dart';
-import 'widgets/servicios/servicios.dart';
-import 'widgets/servicios/comentarios.dart';
-import 'widgets/servicios/consultas.dart';
+import 'widgets/comentario_consultas/comentarios_consultas.dart';
+import 'widgets/comentario_consultas/comentarios.dart';
+import 'widgets/comentario_consultas/consultas.dart';
 import 'package:proyecto_flutter/widgets/ingresar_registrar/ingresar.dart';
 import 'package:proyecto_flutter/widgets/ingresar_registrar/registrar_cliente.dart';
 import 'package:proyecto_flutter/widgets/ingresar_registrar/registrar_personal.dart';
@@ -35,15 +35,13 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-      initialRoute: '/inicio',
+          initialRoute: '/inicio',
           routes: {
             '/inicio': (context) => Inicio(),
-            '/servicios': (context) => Servicios(),
             '/ingresar': (context) => LoginScreen(),
             '/registrar_cliente': (context) => RegistrarCliente(),
             '/registrar_personal': (context) => RegistrarPersonal(),
-            '/comentarios': (context) => Comentarios(),
-            '/consultas': (context) => Consultas(),
+            '/comunidad': (context) => ComentariosConsultas(),
           },
         );
       },

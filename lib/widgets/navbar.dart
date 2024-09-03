@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../widgets/inicio_cliente/inicio_cliente.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NavBar extends StatefulWidget {
   final GlobalKey? quienesSomosKey;
   final GlobalKey? noticiasKey;
+  final GlobalKey? serviciosKey;
+  final GlobalKey? contactoKey;
+  final GlobalKey? comunidadKey; // Agregado aquí
 
-  NavBar({this.quienesSomosKey, this.noticiasKey});
+  NavBar(
+      {this.quienesSomosKey,
+      this.noticiasKey,
+      this.serviciosKey,
+      this.contactoKey,
+      this.comunidadKey});
 
   @override
   _NavBarState createState() => _NavBarState();
@@ -17,16 +24,16 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   final List<Map<String, String>> navLinks = [
     {"label": "Inicio", "route": "/inicio"},
-    {"label": "Servicios", "route": "/servicios"},
+    {"label": "Servicios", "route": "servicios"},
     {"label": "Quiénes Somos", "route": "quienes-somos"},
     {"label": "Noticias", "route": "noticias"},
+    {"label": "Contactos", "route": "contacto"},
+    {"label": "Comunidad", "route": "comunidad"}, // Agregado aquí
   ];
 
   Future<String> _getUserName(String uid) async {
-    DocumentSnapshot clienteDoc = await FirebaseFirestore.instance
-        .collection('clientes')
-        .doc(uid)
-        .get();
+    DocumentSnapshot clienteDoc =
+        await FirebaseFirestore.instance.collection('clientes').doc(uid).get();
 
     if (clienteDoc.exists) {
       String nombres = clienteDoc['nombres'];
@@ -34,10 +41,8 @@ class _NavBarState extends State<NavBar> {
       return '$nombres $apellidos';
     }
 
-    DocumentSnapshot personalDoc = await FirebaseFirestore.instance
-        .collection('personal')
-        .doc(uid)
-        .get();
+    DocumentSnapshot personalDoc =
+        await FirebaseFirestore.instance.collection('personal').doc(uid).get();
 
     if (personalDoc.exists) {
       String nombres = personalDoc['nombres'];
@@ -54,15 +59,34 @@ class _NavBarState extends State<NavBar> {
   }
 
   void _scrollToSection(String route) {
+    final BuildContext? targetContext;
+
     switch (route) {
       case 'quienes-somos':
-        Scrollable.ensureVisible(widget.quienesSomosKey?.currentContext ?? context);
+        targetContext = widget.quienesSomosKey?.currentContext;
         break;
       case 'noticias':
-        Scrollable.ensureVisible(widget.noticiasKey?.currentContext ?? context);
+        targetContext = widget.noticiasKey?.currentContext;
         break;
+      case 'servicios':
+        targetContext = widget.serviciosKey?.currentContext;
+        break;
+      case 'contacto':
+        targetContext = widget.contactoKey?.currentContext;
+        break;
+      case 'comunidad':
+        Navigator.pushNamed(context, route);
+        return;
       default:
         Navigator.pushNamed(context, route);
+        return;
+    }
+
+    if (targetContext != null) {
+      Scrollable.ensureVisible(targetContext,
+          duration: Duration(milliseconds: 300));
+    } else {
+      Navigator.pushNamed(context, route);
     }
   }
 
@@ -121,19 +145,7 @@ class _NavBarState extends State<NavBar> {
                             value: 'profile',
                             child: ListTile(
                               title: Text(userName),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ClienteScreen(
-                                      nombres: userName.split(' ')[0],
-                                      apellidos: userName.split(' ').length > 1
-                                          ? userName.split(' ')[1]
-                                          : '',
-                                    ),
-                                  ),
-                                );
-                              },
+                              onTap: () {},
                             ),
                           ),
                           const PopupMenuItem<String>(
@@ -158,7 +170,8 @@ class _NavBarState extends State<NavBar> {
                                 style: _navBarTextStyle(),
                               ),
                               const SizedBox(width: 10),
-                              const Icon(Icons.arrow_drop_down, color: Colors.white),
+                              const Icon(Icons.arrow_drop_down,
+                                  color: Colors.white),
                             ],
                           ),
                         ),
@@ -195,6 +208,7 @@ class _NavBarState extends State<NavBar> {
       },
     );
   }
+}
 
 TextStyle _navBarTextStyle() {
   return GoogleFonts.cardo(
@@ -210,5 +224,4 @@ TextStyle _navBarTextStyle() {
       ),
     ],
   );
-}
 }

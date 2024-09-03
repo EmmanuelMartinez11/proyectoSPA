@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../inicio/InfoBox.dart';
+import 'InfoBox.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({Key? key}) : super(key: key);
@@ -50,24 +50,27 @@ class AboutSection extends StatelessWidget {
           ),
           const SizedBox(height: 40),
           Wrap(
-            spacing: 20, 
-            runSpacing: 20, 
+            spacing: 20,
+            runSpacing: 20,
             alignment: WrapAlignment.center,
             children: [
               InfoBox(
                 imagePath: '../assets/images/inicio/spa1.webp',
                 title: '¿Qué deseamos?',
-                content: 'Crear experiencias únicas y personalizadas, donde cada detalle está diseñado para que nuestros clientes logren desconectarse de la rutina y se sumerjan en un oasis de calma y relajación, en completa armonía con la naturaleza.',
+                content:
+                    'Crear experiencias únicas y personalizadas, donde cada detalle está diseñado para que nuestros clientes logren desconectarse de la rutina y se sumerjan en un oasis de calma y relajación, en completa armonía con la naturaleza.',
               ),
               InfoBox(
                 imagePath: '../assets/images/inicio/spa2.webp',
                 title: '¿Qué buscamos?',
-                content: 'Ser los referentes en bienestar, conocidos por innovar en tratamientos que no solo cuidan el cuerpo, sino que también revitalizan el espíritu, ofreciendo un refugio perfecto para la mente y el cuerpo.',
+                content:
+                    'Ser los referentes en bienestar, conocidos por innovar en tratamientos que no solo cuidan el cuerpo, sino que también revitalizan el espíritu, ofreciendo un refugio perfecto para la mente y el cuerpo.',
               ),
               InfoBox(
                 imagePath: '../assets/images/inicio/spa3.webp',
                 title: '¿Cómo lo haremos?',
-                content: 'Nos comprometemos a mantener los más altos estándares en cada servicio, asegurando que cada cliente reciba atención personalizada, utilizando productos de la mejor calidad y técnicas avanzadas en cada tratamiento.',
+                content:
+                    'Nos comprometemos a mantener los más altos estándares en cada servicio, asegurando que cada cliente reciba atención personalizada, utilizando productos de la mejor calidad y técnicas avanzadas en cada tratamiento.',
               ),
             ],
           ),

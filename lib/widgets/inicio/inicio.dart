@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
-import 'carousel.dart';
-import 'nosotros.dart';
-import 'contacto.dart';
-import '../navbar.dart'; 
+import 'package:proyecto_flutter/widgets/comentario_consultas/comentarios_consultas.dart';
+import 'package:proyecto_flutter/widgets/inicio/carousel.dart';
+import 'package:proyecto_flutter/widgets/noticias/noticias.dart';
+import 'package:proyecto_flutter/widgets/servicios/servicios.dart';
+import '../quienes_somos/nosotros.dart';
+import '../contacto/contacto.dart';
+import '../navbar.dart';
 
 class Inicio extends StatefulWidget {
   @override
@@ -17,30 +20,37 @@ class _InicioState extends State<Inicio> {
   final ScrollController _scrollController = ScrollController();
   bool _showNavBar = true;
 
-
+  final GlobalKey _serviciosKey = GlobalKey();
+  final GlobalKey _noticiasKey = GlobalKey();
+  final GlobalKey _contactoKey = GlobalKey();
   final GlobalKey _quienesSomosKey = GlobalKey();
+  final GlobalKey _comunidadKey = GlobalKey(); // Nuevo GlobalKey
 
   @override
   void initState() {
     super.initState();
     _carouselController = InfiniteScrollController();
-    _scrollController.addListener(() {
-      if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
-        if (_showNavBar) {
-          setState(() {
-            _showNavBar = false;
-          });
-        }
-      } else if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
-        if (!_showNavBar) {
-          setState(() {
-            _showNavBar = true;
-          });
-        }
-      }
-    });
+    _scrollController.addListener(_handleScroll);
   }
-  
+
+  void _handleScroll() {
+    if (_scrollController.position.userScrollDirection ==
+        ScrollDirection.reverse) {
+      if (_showNavBar) {
+        setState(() {
+          _showNavBar = false;
+        });
+      }
+    } else if (_scrollController.position.userScrollDirection ==
+        ScrollDirection.forward) {
+      if (!_showNavBar) {
+        setState(() {
+          _showNavBar = true;
+        });
+      }
+    }
+  }
+
   @override
   void dispose() {
     _carouselController.dispose();
@@ -54,7 +64,7 @@ class _InicioState extends State<Inicio> {
       body: Stack(
         children: [
           SingleChildScrollView(
-            controller: _scrollController, // Asegúrate de pasar el controlador aquí
+            controller: _scrollController,
             child: Column(
               children: [
                 SizedBox(
@@ -65,52 +75,69 @@ class _InicioState extends State<Inicio> {
                       {
                         "image": "../assets/images/inicio/belleza.webp",
                         "title": "Belleza",
-                        "description": "Realza tu belleza natural con nuestros tratamientos exclusivos."
+                        "description":
+                            "Realza tu belleza natural con nuestros tratamientos exclusivos."
                       },
                       {
                         "image": "../assets/images/inicio/facial.webp",
                         "title": "Tratamientos Faciales",
-                        "description": "Revitaliza tu piel con nuestras técnicas avanzadas de cuidado facial."
+                        "description":
+                            "Revitaliza tu piel con nuestras técnicas avanzadas de cuidado facial."
                       },
                       {
                         "image": "../assets/images/inicio/corporales.webp",
                         "title": "Tratamientos Corporales",
-                        "description": "Cuida y tonifica tu cuerpo con nuestros tratamientos personalizados."
+                        "description":
+                            "Cuida y tonifica tu cuerpo con nuestros tratamientos personalizados."
                       },
                       {
                         "image": "../assets/images/inicio/masajes.webp",
                         "title": "Masajes",
-                        "description": "Relájate y desconecta con nuestros masajes terapéuticos."
+                        "description":
+                            "Relájate y desconecta con nuestros masajes terapéuticos."
                       },
                     ],
                     carouselController: _carouselController,
                   ),
                 ),
-
-                AboutSection(key: _quienesSomosKey),
-
-                ContactSection(
-                  spaLocation: const LatLng(-27.450953544514192, -58.97908033769105),
+                Container(
+                  key: _quienesSomosKey,
+                  child: AboutSection(),
                 ),
-                
+                Container(
+                  key: _serviciosKey,
+                  child: ServiciosPage(),
+                ),
+                Container(
+                  key: _noticiasKey,
+                  child: NoticiasPage(),
+                ),
+                Container(
+                  key: _comunidadKey, // Agregado aquí
+                  child: ComentariosConsultas(),
+                ),
+                Container(
+                  key: _contactoKey,
+                  child: ContactSection(
+                    spaLocation:
+                        const LatLng(-27.450953544514192, -58.97908033769105),
+                  ),
+                ),
               ],
             ),
           ),
-          Positioned(
-            top: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: AnimatedOpacity(
-              opacity: _showNavBar ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 300),
-              child: Container(
-                color: Colors.transparent,
-                child: NavBar(
-                  quienesSomosKey: _quienesSomosKey,
-                ), 
+          if (_showNavBar)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: NavBar(
+                quienesSomosKey: _quienesSomosKey,
+                serviciosKey: _serviciosKey,
+                noticiasKey: _noticiasKey,
+                contactoKey: _contactoKey,
               ),
             ),
-          ),
         ],
       ),
     );
