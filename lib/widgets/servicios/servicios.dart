@@ -17,25 +17,18 @@ class ServiciosPage extends StatelessWidget {
         ),
       ),
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-       RichText( // Usamos RichText para combinar diferentes estilos
-         text: TextSpan(
-           style: TextStyle(
-             color: Colors.black,
-             fontSize: 32,
-             fontWeight: FontWeight.bold,
-           ),
-           children: <TextSpan>[
-             TextSpan(text: "Servicios "), // Parte normal
-             TextSpan(
-               text: "Individuales",
-               style: TextStyle(fontStyle: FontStyle.italic), // Parte en cursiva
-             ),
-           ],
-         ),
-       ),
+   child: Column(
+     mainAxisAlignment: MainAxisAlignment.start,
+     children: [
+      Text(
+        "Servicios Individuales",
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+          // fontStyle: FontStyle.italic, // Elimina esta línea
+        ),
+      ),
             SizedBox(height: 20),
             Expanded( 
               child: ListView(
