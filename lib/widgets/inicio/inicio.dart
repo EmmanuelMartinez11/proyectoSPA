@@ -98,6 +98,7 @@ class _InicioState extends State<Inicio> {
                       },
                     ],
                     carouselController: _carouselController,
+                    serviciosKey: _serviciosKey,
                   ),
                 ),
                 Container(
@@ -131,11 +132,28 @@ class _InicioState extends State<Inicio> {
               top: 0,
               left: 0,
               right: 0,
-              child: NavBar(
-                quienesSomosKey: _quienesSomosKey,
-                serviciosKey: _serviciosKey,
-                noticiasKey: _noticiasKey,
-                contactoKey: _contactoKey,
+              child: AnimatedOpacity(
+                opacity: _showNavBar ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 300),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.black.withOpacity(0.9),
+                        Colors.black.withOpacity(0.5),
+                        Colors.black.withOpacity(0.0),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: NavBar(
+                    quienesSomosKey: _quienesSomosKey,
+                    serviciosKey: _serviciosKey,
+                    noticiasKey: _noticiasKey,
+                    contactoKey: _contactoKey,
+                  ),
+                ),
               ),
             ),
         ],

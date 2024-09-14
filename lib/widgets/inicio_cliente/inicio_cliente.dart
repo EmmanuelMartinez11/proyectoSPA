@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:proyecto_flutter/widgets/navbar.dart';
 import 'sacar_turno.dart';
 import 'turnos_cliente.dart';
-import 'proximo_turno.dart'; // Importa el nuevo archivo
+import 'proximo_turno.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ClienteScreen extends StatelessWidget {
@@ -18,6 +18,16 @@ class ClienteScreen extends StatelessWidget {
     String apellidos = clienteDoc['apellidos'];
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Volver al inicio'),
+        shadowColor: Color(0x00),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); 
+          },
+        ),
+      ),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -27,7 +37,6 @@ class ClienteScreen extends StatelessWidget {
         ),
         child: Column(
           children: <Widget>[
-            NavBar(),
             Padding(
               padding: const EdgeInsets.all(
                   16.0), // Añade un poco de espacio alrededor del mensaje
@@ -36,7 +45,7 @@ class ClienteScreen extends StatelessWidget {
                 style: GoogleFonts.greatVibes(
                   fontSize: 60,
                   fontWeight: FontWeight.bold,
-                  color: Colors.orange.shade800,
+                  color: const Color.fromARGB(238, 124, 168, 119),
                 ),
                 textAlign: TextAlign.center,
               ),

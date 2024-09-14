@@ -6,8 +6,13 @@ import '../button.dart';
 class CarouselWidget extends StatelessWidget {
   final List<Map<String, String>> items;
   final InfiniteScrollController carouselController;
+  final GlobalKey serviciosKey;  // GlobalKey para la sección de servicios
 
-  const CarouselWidget({required this.items, required this.carouselController});
+  const CarouselWidget({
+    required this.items,
+    required this.carouselController,
+    required this.serviciosKey,  // Asegúrate de recibir la GlobalKey
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +71,11 @@ class CarouselWidget extends StatelessWidget {
                       const SizedBox(height: 30),
                       HoverButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/servicios");
+                          Scrollable.ensureVisible(
+                            serviciosKey.currentContext!,  // Desplaza hasta la sección de servicios
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                          );
                         },
                         text: 'Conoce más',
                       ),
@@ -84,7 +93,7 @@ class CarouselWidget extends StatelessWidget {
             icon: const Icon(Icons.arrow_back, color: Colors.white, size: 50),
             onPressed: () {
               carouselController.previousItem();
-              },
+            },
           ),
         ),
         Positioned(

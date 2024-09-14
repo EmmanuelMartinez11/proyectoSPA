@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../widgets/inicio_cliente/inicio_cliente.dart';  // Importa la pantalla de cliente
 
 class NavBar extends StatefulWidget {
   final GlobalKey? quienesSomosKey;
   final GlobalKey? noticiasKey;
   final GlobalKey? serviciosKey;
   final GlobalKey? contactoKey;
-  final GlobalKey? comunidadKey; // Agregado aquí
+  final GlobalKey? comunidadKey;
 
-  NavBar(
-      {this.quienesSomosKey,
-      this.noticiasKey,
-      this.serviciosKey,
-      this.contactoKey,
-      this.comunidadKey});
+  NavBar({
+    this.quienesSomosKey,
+    this.noticiasKey,
+    this.serviciosKey,
+    this.contactoKey,
+    this.comunidadKey,
+  });
 
   @override
   _NavBarState createState() => _NavBarState();
@@ -28,29 +30,25 @@ class _NavBarState extends State<NavBar> {
     {"label": "Quiénes Somos", "route": "quienes-somos"},
     {"label": "Noticias", "route": "noticias"},
     {"label": "Contactos", "route": "contacto"},
-    {"label": "Comunidad", "route": "comunidad"}, // Agregado aquí
+    {"label": "Comunidad", "route": "comunidad"},
   ];
 
-  Future<String> _getUserName(String uid) async {
+  Future<DocumentSnapshot> _getUserDoc(String uid) async {
     DocumentSnapshot clienteDoc =
         await FirebaseFirestore.instance.collection('clientes').doc(uid).get();
 
     if (clienteDoc.exists) {
-      String nombres = clienteDoc['nombres'];
-      String apellidos = clienteDoc['apellidos'];
-      return '$nombres $apellidos';
+      return clienteDoc;
     }
 
     DocumentSnapshot personalDoc =
         await FirebaseFirestore.instance.collection('personal').doc(uid).get();
 
     if (personalDoc.exists) {
-      String nombres = personalDoc['nombres'];
-      String apellidos = personalDoc['apellidos'];
-      return '$nombres $apellidos';
+      return personalDoc;
     }
 
-    return 'Usuario';
+    throw Exception('Usuario no encontrado');
   }
 
   void _signOut() async {
@@ -125,19 +123,28 @@ class _NavBarState extends State<NavBar> {
                 }).toList(),
               ),
               if (user != null)
-                FutureBuilder<String>(
-                  future: _getUserName(user.uid),
+                FutureBuilder<DocumentSnapshot>(
+                  future: _getUserDoc(user.uid),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
                     } else if (snapshot.hasError) {
-                      return const Text('Error al cargar nombre');
+                      return const Text('Error al cargar datos');
                     } else {
-                      String userName = snapshot.data ?? 'Usuario';
+                      String userName = snapshot.data?['nombres'] ?? 'Usuario';
                       return PopupMenuButton<String>(
                         onSelected: (value) {
                           if (value == 'logout') {
                             _signOut();
+                          } else if (value == 'profile') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ClienteScreen(
+                                  clienteDoc: snapshot.data!,
+                                ),
+                              ),
+                            );
                           }
                         },
                         itemBuilder: (context) => [
@@ -145,7 +152,17 @@ class _NavBarState extends State<NavBar> {
                             value: 'profile',
                             child: ListTile(
                               title: Text(userName),
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.pop(context); 
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ClienteScreen(
+                                      clienteDoc: snapshot.data!,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                           const PopupMenuItem<String>(
