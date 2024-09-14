@@ -7,7 +7,8 @@ class TurnosPersonalTable extends StatefulWidget {
   final String nombres;
   final String apellidos;
 
-  TurnosPersonalTable({required this.nombres, required this.apellidos});
+
+  TurnosPersonalTable({required this.nombres, required this.apellidos,});
 
   @override
   _TurnosPersonalTableState createState() => _TurnosPersonalTableState();
