@@ -17,36 +17,37 @@ class AboutSection extends StatelessWidget {
           alignment: Alignment.bottomLeft,
         ),
       ),
-      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             'SPA SENTIRSE BIEN',
             style: GoogleFonts.notoSerif(
-              fontSize: 20,
+              fontSize: 40,
               color: Colors.green.shade900,
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 10),
           Text(
-            'Bienvenido a este hogar de Tranquilidad, Relajación y Descanso.',
+            'Bienvenido a este hogar de Tranquilidad, Descanso y Relajación',
             style: GoogleFonts.dancingScript(
               fontSize: 36,
               fontWeight: FontWeight.bold,
               color: Colors.orange.shade800,
             ),
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.center,            
           ),
           const SizedBox(height: 10),
           Text(
-            'Todo el mundo busca lugares donde relajarse y recargar energía. En nuestro centro de bienestar nos damos cita al silencio, la energía, la belleza y la vitalidad. Los tratamientos que ofrecemos refrescarán tanto tu cuerpo como tu alma.\nEstaremos encantados de recibirte',
+            'Todo el mundo busca lugares donde relajarse y recargar energía. En nuestro centro de bienestar nos damos cita al silencio, la energía, la belleza y la vitalidad.\nLos tratamientos que ofrecemos refrescarán tanto tu cuerpo como tu alma.\nEstaremos encantados de recibirte.',
             style: GoogleFonts.cardo(
-              fontSize: 18,
+              fontSize: 20,
               color: Colors.grey.shade800,
             ),
             textAlign: TextAlign.center,
+            
           ),
           const SizedBox(height: 40),
           Wrap(

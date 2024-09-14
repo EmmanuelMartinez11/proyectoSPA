@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../widgets/inicio_cliente/inicio_cliente.dart';  // Importa la pantalla de cliente
+import '../widgets/inicio_cliente/inicio_cliente.dart'; // Asegúrate de que esto apunte correctamente a tu pantalla de cliente
 
 class NavBar extends StatefulWidget {
   final GlobalKey? quienesSomosKey;
@@ -210,13 +210,9 @@ class _NavBarState extends State<NavBar> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Ingresar',
-                    style: TextStyle(
-                      fontFamily: "Montserrat",
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: _navBarTextStyle(), // Cambiado, no es const
                   ),
                 ),
             ],
