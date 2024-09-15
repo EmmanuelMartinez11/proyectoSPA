@@ -79,7 +79,7 @@ class _InicioState extends State<Inicio> {
                             "Realza tu belleza natural con nuestros tratamientos exclusivos."
                       },
                       {
-                        "image": "assets/images/facial.webp",
+                        "image": "assets/images/Facial.webp",
                         "title": "Tratamientos Faciales",
                         "description":
                             "Revitaliza tu piel con nuestras técnicas avanzadas de cuidado facial."
