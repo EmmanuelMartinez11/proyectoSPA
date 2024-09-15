@@ -153,7 +153,7 @@ class _NavBarState extends State<NavBar> {
                             child: ListTile(
                               title: Text(userName),
                               onTap: () {
-                                Navigator.pop(context); 
+                                Navigator.pop(context);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -212,7 +212,7 @@ class _NavBarState extends State<NavBar> {
                   ),
                   child: Text(
                     'Ingresar',
-                    style: _navBarTextStyle(), // Cambiado, no es const
+                    style: _navBarTextStyle(),
                   ),
                 ),
             ],
