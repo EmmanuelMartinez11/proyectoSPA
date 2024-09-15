@@ -42,7 +42,7 @@ class PersonalScreen extends StatelessWidget {
         // Contenedor principal con imagen de fondo
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('../assets/images/back.png'),
+            image: AssetImage('assets/images/back.png'),
             fit: BoxFit.cover,
           ),
         ),

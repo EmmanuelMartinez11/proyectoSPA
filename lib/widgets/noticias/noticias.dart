@@ -13,7 +13,7 @@ class NoticiasPage extends StatelessWidget {
       height: 700,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('/images/noticia1.png'),
+          image: AssetImage('assets/images/noticia1.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -35,7 +35,7 @@ class NoticiasPage extends StatelessWidget {
               context, // Pasa el contexto a _buildNewsCard
               'El poder de la meditación para reducir el estrés',
               'Estudios recientes demuestran los beneficios de la meditación...',
-              'images/meditacion.png',
+              'assets/images/meditacion.png',
               'https://www.mayoclinic.org/es/tests-procedures/meditation/in-depth/meditation/art-20045858',
             ),
             SizedBox(height: 20),
@@ -43,7 +43,7 @@ class NoticiasPage extends StatelessWidget {
               context, // Pasa el contexto a _buildNewsCard
               'Alimentos que potencian tu belleza',
               'Descubre los superalimentos que nutren tu piel y cabello...',
-              'images/alimentos.png',
+              'assets/images/alimentos.png',
               'https://www.espacebeaute.com.ar/5-alimentos-con-propiedades-que-potencian-tu-belleza/',
             ),
             SizedBox(height: 20),
@@ -51,7 +51,7 @@ class NoticiasPage extends StatelessWidget {
               context, // Pasa el contexto a _buildNewsCard
               'Los masajes y su impacto en la salud',
               'Más allá de la relajación, los masajes pueden aliviar dolores...',
-              'images/massage.png',
+              'assets/images/massage.png',
               'https://www.mayoclinic.org/es/tests-procedures/massage-therapy/about/pac-20384595',
             ),
             // Agrega más tarjetas de noticias aquí...
@@ -99,4 +99,3 @@ class NoticiasPage extends StatelessWidget {
     );
   }
 }
- 

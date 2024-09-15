@@ -285,7 +285,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(
-                          '../assets/images/ingresar.jpg'), // Ruta de la imagen en tu proyecto
+                          'assets/images/ingresar.jpg'), // Ruta de la imagen en tu proyecto
                       fit: BoxFit.cover, // Ajusta la imagen al contenedor
                     ),
                   ),

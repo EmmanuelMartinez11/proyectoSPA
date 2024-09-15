@@ -95,7 +95,7 @@ class _NavBarState extends State<NavBar> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Image.asset(
-                '../assets/images/logo_spa.png',
+                'assets/images/logo_spa.png',
                 height: 60,
               ),
               Row(
