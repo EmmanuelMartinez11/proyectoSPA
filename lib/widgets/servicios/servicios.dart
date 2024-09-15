@@ -12,7 +12,7 @@ class ServiciosPage extends StatelessWidget {
       height: 900,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('images/design.png'),
+          image: AssetImage('assets/images/design.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -37,65 +37,65 @@ class ServiciosPage extends StatelessWidget {
                     _buildServiceCard(
                         'Anti-stress',
                         'Relajación y bienestar total.',
-                        'images/Anti-stress.jpg'),
+                        'assets/images/Anti-stress.jpg'),
                     _buildServiceCard(
                         'Masaje Descontracturante',
                         'Alivia tensiones y dolores musculares.',
-                        'images/Masaje-Descontracturante.jpg'),
+                        'assets/images/Masaje-Descontracturante.jpg'),
                     _buildServiceCard(
                         'Masaje con Piedras Calientes',
                         'Relajación profunda con terapia de calor.',
-                        'images/Masaje-Piedras-Calientes.jpg'),
+                        'assets/images/Masaje-Piedras-Calientes.jpg'),
                     _buildServiceCard(
                         'Masaje Circulatorio',
                         'Mejora la circulación y reduce la fatiga.',
-                        'images/Masaje-Circulatorio.jpg'),
+                        'assets/images/Masaje-Circulatorio.jpg'),
                   ]),
                   _buildCategory("Belleza", [
                     _buildServiceCard(
                         'Lifting de Pestañas',
                         'Pestañas más largas y curvas de forma natural.',
-                        'images/Lifting-Pestanas.jpg'),
+                        'assets/images/Lifting-Pestanas.jpg'),
                     _buildServiceCard(
                         'Depilación Facial',
                         'Elimina el vello no deseado de forma suave.',
-                        'images/Depilacion-Facial.jpg'),
+                        'assets/images/Depilacion-Facial.jpg'),
                     _buildServiceCard(
                         'Belleza de manos y pies',
                         'Manicura y pedicura profesional.',
-                        'images/Belleza-Manos-Pies.jpg'),
+                        'assets/images/Belleza-Manos-Pies.jpg'),
                   ]),
                   _buildCategory("Tratamientos Faciales", [
                     _buildServiceCard(
                         'Punta de Diamante',
                         'Exfoliación y renovación celular profunda.',
-                        'images/Punta-Diamante.jpg'),
+                        'assets/images/Punta-Diamante.jpg'),
                     _buildServiceCard(
                         'Limpieza Profunda e Hidratación',
                         'Purifica y revitaliza tu piel.',
-                        'images/Limpieza-Profunda-Hidratacion.jpg'),
+                        'assets/images/Limpieza-Profunda-Hidratacion.jpg'),
                     _buildServiceCard(
                         'Crio Frecuencia Facial',
                         'Rejuvenece y reafirma tu rostro.',
-                        'images/Crio-Frecuencia-Facial.jpg'),
+                        'assets/images/Crio-Frecuencia-Facial.jpg'),
                   ]),
                   _buildCategory("Tratamientos Corporales", [
                     _buildServiceCard(
                         'VelaSlim',
                         'Modela tu figura y reduce la celulitis.',
-                        'images/VelaSlim.jpg'),
+                        'assets/images/VelaSlim.jpg'),
                     _buildServiceCard(
                         'DermoHealth',
                         'Tratamiento especializado para la piel.',
-                        'images/DermoHealth.jpg'),
+                        'assets/images/DermoHealth.jpg'),
                     _buildServiceCard(
                         'Crio Frecuencia Corporal',
                         'Reduce medidas y tonifica tu cuerpo.',
-                        'images/Crio-Frecuencia-Corporal.jpg'),
+                        'assets/images/Crio-Frecuencia-Corporal.jpg'),
                     _buildServiceCard(
                         'Ultracavitación',
                         'Elimina grasa localizada sin cirugía.',
-                        'images/Ultracavitacion.jpg'),
+                        'assets/images/Ultracavitacion.jpg'),
                   ]),
                 ],
               ),

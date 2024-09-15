@@ -30,7 +30,6 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/a8493a8e6c2d251f290e8e72899478b9/
-/build/flutter_assets/
 /build/1906162ccb255627e94d2d17da8fe11e.cache.dill.track.dill/
 
 # Symbolication related

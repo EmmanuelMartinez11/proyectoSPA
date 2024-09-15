@@ -188,7 +188,7 @@ class _RegistrarPersonalState extends State<RegistrarPersonal> {
             width: width,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('../assets/images/masajes.webp'),
+                image: AssetImage('assets/images/masajes.webp'),
                 fit: BoxFit.cover,
               ),
             ),
