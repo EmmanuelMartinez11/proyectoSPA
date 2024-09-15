@@ -12,18 +12,17 @@ class ClienteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Accede a los datos del cliente desde clienteDoc
+
     String nombres = clienteDoc['nombres'];
     String apellidos = clienteDoc['apellidos'];
 
-    // Color de fondo y del AppBar
     Color fondoColor = const Color.fromARGB(166, 244, 143, 177);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Volver al inicio'),
-        backgroundColor: fondoColor,  // Aplicar color de fondo al AppBar
-        elevation: 0,  // Sin sombra en el AppBar
+        backgroundColor: fondoColor,  
+        elevation: 0,  
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -32,12 +31,12 @@ class ClienteScreen extends StatelessWidget {
         ),
       ),
       body: Container(
-        color: fondoColor, // Aplicar el mismo color al fondo del body
+        color: fondoColor, 
         child: Column(
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(
-                  16.0), // Añade un poco de espacio alrededor del mensaje
+                  16.0),
               child: Text(
                 'Bienvenido $nombres $apellidos',
                 style: GoogleFonts.greatVibes(
@@ -71,16 +70,15 @@ class ClienteScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // Aquí hacemos que la tabla no ocupe todo el ancho
                   Expanded(
                     flex: 2,
                     child: Padding(
-                      padding: const EdgeInsets.only(right: 50.0), // Espacio desde el borde derecho
+                      padding: const EdgeInsets.only(right: 50.0), 
                       child: Container(
-                        padding: const EdgeInsets.all(10.0), // Espacio interior del recuadro
+                        padding: const EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(228, 255, 255, 255), // Fondo de la tabla
-                          borderRadius: BorderRadius.circular(10.0), // Esquinas redondeadas
+                          color: const Color.fromARGB(228, 255, 255, 255), 
+                          borderRadius: BorderRadius.circular(10.0), 
                         ),
                         child: TurnosClienteTable(
                           nombres: nombres,
