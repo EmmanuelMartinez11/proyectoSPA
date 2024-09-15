@@ -12,7 +12,7 @@ class AboutSection extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Color.fromARGB(166, 244, 143, 177),
         image: DecorationImage(
-          image: AssetImage('../assets/images/inicio/chill.png'),
+          image: AssetImage('../assets/images/chill.png'),
           fit: BoxFit.none,
           alignment: Alignment.bottomLeft,
         ),
@@ -37,7 +37,7 @@ class AboutSection extends StatelessWidget {
               fontWeight: FontWeight.bold,
               color: Colors.orange.shade800,
             ),
-            textAlign: TextAlign.center,            
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 10),
           Text(
@@ -47,7 +47,6 @@ class AboutSection extends StatelessWidget {
               color: Colors.grey.shade800,
             ),
             textAlign: TextAlign.center,
-            
           ),
           const SizedBox(height: 40),
           Wrap(
@@ -56,19 +55,19 @@ class AboutSection extends StatelessWidget {
             alignment: WrapAlignment.center,
             children: [
               InfoBox(
-                imagePath: '../assets/images/inicio/spa1.webp',
+                imagePath: '../assets/images/spa1.webp',
                 title: '¿Qué deseamos?',
                 content:
                     'Crear experiencias únicas y personalizadas, donde cada detalle está diseñado para que nuestros clientes logren desconectarse de la rutina y se sumerjan en un oasis de calma y relajación, en completa armonía con la naturaleza.',
               ),
               InfoBox(
-                imagePath: '../assets/images/inicio/spa2.webp',
+                imagePath: '../assets/images/spa2.webp',
                 title: '¿Qué buscamos?',
                 content:
                     'Ser los referentes en bienestar, conocidos por innovar en tratamientos que no solo cuidan el cuerpo, sino que también revitalizan el espíritu, ofreciendo un refugio perfecto para la mente y el cuerpo.',
               ),
               InfoBox(
-                imagePath: '../assets/images/inicio/spa3.webp',
+                imagePath: '../assets/images/spa3.webp',
                 title: '¿Cómo lo haremos?',
                 content:
                     'Nos comprometemos a mantener los más altos estándares en cada servicio, asegurando que cada cliente reciba atención personalizada, utilizando productos de la mejor calidad y técnicas avanzadas en cada tratamiento.',

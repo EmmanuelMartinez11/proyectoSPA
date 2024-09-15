@@ -9,14 +9,11 @@ class NavBar extends StatefulWidget {
   final GlobalKey? noticiasKey;
   final GlobalKey? serviciosKey;
   final GlobalKey? contactoKey;
-  final GlobalKey? comunidadKey;
-
   NavBar({
     this.quienesSomosKey,
     this.noticiasKey,
     this.serviciosKey,
     this.contactoKey,
-    this.comunidadKey,
   });
 
   @override
@@ -26,11 +23,10 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   final List<Map<String, String>> navLinks = [
     {"label": "Inicio", "route": "/inicio"},
-    {"label": "Servicios", "route": "servicios"},
     {"label": "Quiénes Somos", "route": "quienes-somos"},
+    {"label": "Servicios", "route": "servicios"},
     {"label": "Noticias", "route": "noticias"},
     {"label": "Contactos", "route": "contacto"},
-    {"label": "Comunidad", "route": "comunidad"},
   ];
 
   Future<DocumentSnapshot> _getUserDoc(String uid) async {
@@ -72,9 +68,6 @@ class _NavBarState extends State<NavBar> {
       case 'contacto':
         targetContext = widget.contactoKey?.currentContext;
         break;
-      case 'comunidad':
-        Navigator.pushNamed(context, route);
-        return;
       default:
         Navigator.pushNamed(context, route);
         return;

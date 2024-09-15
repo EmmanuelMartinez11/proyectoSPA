@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart'; 
+import 'package:url_launcher/url_launcher.dart';
 
 class NoticiasPage extends StatelessWidget {
   final Key? key;
@@ -13,45 +13,45 @@ class NoticiasPage extends StatelessWidget {
       height: 700,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('images/servicios/noticia1.png'),
+          image: AssetImage('/images/noticia1.png'),
           fit: BoxFit.cover,
         ),
       ),
-      child: SingleChildScrollView( 
+      child: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 40), 
+            SizedBox(height: 40),
             Text(
               "Noticias",
               style: TextStyle(
-                color: Colors.black, 
+                color: Colors.black,
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
                 fontStyle: FontStyle.italic,
               ),
             ),
-            SizedBox(height: 20), 
+            SizedBox(height: 20),
             _buildNewsCard(
               context, // Pasa el contexto a _buildNewsCard
               'El poder de la meditación para reducir el estrés',
               'Estudios recientes demuestran los beneficios de la meditación...',
-              'images/servicios/meditacion.png',
-              'https://www.mayoclinic.org/es/tests-procedures/meditation/in-depth/meditation/art-20045858', 
+              'images/meditacion.png',
+              'https://www.mayoclinic.org/es/tests-procedures/meditation/in-depth/meditation/art-20045858',
             ),
-            SizedBox(height: 20), 
+            SizedBox(height: 20),
             _buildNewsCard(
               context, // Pasa el contexto a _buildNewsCard
               'Alimentos que potencian tu belleza',
               'Descubre los superalimentos que nutren tu piel y cabello...',
-              'images/servicios/alimentos.png',
-              'https://www.espacebeaute.com.ar/5-alimentos-con-propiedades-que-potencian-tu-belleza/', 
+              'images/alimentos.png',
+              'https://www.espacebeaute.com.ar/5-alimentos-con-propiedades-que-potencian-tu-belleza/',
             ),
-            SizedBox(height: 20), 
+            SizedBox(height: 20),
             _buildNewsCard(
               context, // Pasa el contexto a _buildNewsCard
               'Los masajes y su impacto en la salud',
               'Más allá de la relajación, los masajes pueden aliviar dolores...',
-              'images/servicios/massage.png',
+              'images/massage.png',
               'https://www.mayoclinic.org/es/tests-procedures/massage-therapy/about/pac-20384595',
             ),
             // Agrega más tarjetas de noticias aquí...
@@ -61,11 +61,12 @@ class NoticiasPage extends StatelessWidget {
     );
   }
 
-  Widget _buildNewsCard(BuildContext context, String title, String excerpt, String imagePath, String url) {
-    return GestureDetector( 
+  Widget _buildNewsCard(BuildContext context, String title, String excerpt,
+      String imagePath, String url) {
+    return GestureDetector(
       onTap: () async {
-        if (await canLaunch(url)) { 
-          await launch(url); 
+        if (await canLaunch(url)) {
+          await launch(url);
         } else {
           // Muestra un diálogo de error si no se puede abrir el enlace
           showDialog(
@@ -77,7 +78,7 @@ class NoticiasPage extends StatelessWidget {
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pop(); 
+                      Navigator.of(context).pop();
                     },
                     child: Text('OK'),
                   ),

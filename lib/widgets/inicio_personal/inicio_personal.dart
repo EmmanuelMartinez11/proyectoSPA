@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // Importa GoogleFonts para la tipografía
-import 'package:proyecto_flutter/widgets/navbar.dart';// Asegúrate de tener un NavBar similar al de Cliente
+import 'package:proyecto_flutter/widgets/navbar.dart'; // Asegúrate de tener un NavBar similar al de Cliente
 import 'turnos_personal.dart';
 import 'proximo_turno_personal.dart';
-import 'consultas_personal.dart'; 
+import 'consultas_personal.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PersonalScreen extends StatelessWidget {
@@ -38,21 +38,24 @@ class PersonalScreen extends StatelessWidget {
     print('Servicio: $servicio');
 
     return Scaffold(
-      body: Container( // Contenedor principal con imagen de fondo
+      body: Container(
+        // Contenedor principal con imagen de fondo
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('../assets/images/inicio/back.png'), 
+            image: AssetImage('../assets/images/back.png'),
             fit: BoxFit.cover,
           ),
         ),
         child: Column(
           children: <Widget>[
             NavBar(), // Barra de navegación similar a la de Cliente
-            Padding( // Mensaje de bienvenida con estilo similar
+            Padding(
+              // Mensaje de bienvenida con estilo similar
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 'Bienvenido $nombres $apellidos',
-                style: GoogleFonts.greatVibes( // Usa la misma tipografía
+                style: GoogleFonts.greatVibes(
+                  // Usa la misma tipografía
                   fontSize: 60,
                   fontWeight: FontWeight.bold,
                   color: Colors.orange.shade800,
@@ -60,23 +63,27 @@ class PersonalScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: 30), // Espacio entre el mensaje y el contenido
-            Expanded( 
-              child: DefaultTabController( // Usa DefaultTabController para las pestañas
+            const SizedBox(
+                height: 30), // Espacio entre el mensaje y el contenido
+            Expanded(
+              child: DefaultTabController(
+                // Usa DefaultTabController para las pestañas
                 length: 2,
                 child: Column(
                   children: <Widget>[
-                    TabBar( // Barra de pestañas
+                    TabBar(
+                      // Barra de pestañas
                       tabs: [
                         Tab(text: 'Turnos'),
                         Tab(text: 'Consultas'),
                       ],
                     ),
-                    Expanded( // Contenido de las pestañas
+                    Expanded(
+                      // Contenido de las pestañas
                       child: TabBarView(
                         children: [
-                          
-                          Column( // Contenido de la pestaña "Turnos"
+                          Column(
+                            // Contenido de la pestaña "Turnos"
                             children: [
                               ProximoTurnoPersonal(
                                 nombres: nombres,
@@ -90,7 +97,9 @@ class PersonalScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          ConsultasPersonal(servicioPersonal: servicio), // Contenido de la pestaña "Consultas"
+                          ConsultasPersonal(
+                              servicioPersonal:
+                                  servicio), // Contenido de la pestaña "Consultas"
                         ],
                       ),
                     ),

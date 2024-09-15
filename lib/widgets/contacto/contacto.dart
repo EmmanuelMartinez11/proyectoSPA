@@ -37,7 +37,7 @@ class ContactSection extends StatelessWidget {
                   right: 0,
                   bottom: -40,
                   child: Image.asset(
-                    '../assets/images/inicio/background.png',
+                    '../assets/images/background.png',
                   ),
                 ),
                 Column(

@@ -9,51 +9,93 @@ class ServiciosPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       key: key,
-      height: 900, 
+      height: 900,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('images/servicios/design.png'),
+          image: AssetImage('images/design.png'),
           fit: BoxFit.cover,
         ),
       ),
       child: Center(
-   child: Column(
-     mainAxisAlignment: MainAxisAlignment.start,
-     children: [
-      Text(
-        "Servicios Individuales",
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 32,
-          fontWeight: FontWeight.bold,
-          // fontStyle: FontStyle.italic, // Elimina esta línea
-        ),
-      ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              "Servicios Individuales",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                // fontStyle: FontStyle.italic, // Elimina esta línea
+              ),
+            ),
             SizedBox(height: 20),
-            Expanded( 
+            Expanded(
               child: ListView(
                 children: [
                   _buildCategory("Masajes", [
-                    _buildServiceCard('Anti-stress', 'Relajación y bienestar total.', 'images/servicios/Anti-stress.jpg'),
-                    _buildServiceCard('Masaje Descontracturante', 'Alivia tensiones y dolores musculares.', 'images/servicios/Masaje-Descontracturante.jpg'),
-                    _buildServiceCard('Masaje con Piedras Calientes', 'Relajación profunda con terapia de calor.', 'images/servicios/Masaje-Piedras-Calientes.jpg'),
-                    _buildServiceCard('Masaje Circulatorio', 'Mejora la circulación y reduce la fatiga.', 'images/servicios/Masaje-Circulatorio.jpg'),
+                    _buildServiceCard(
+                        'Anti-stress',
+                        'Relajación y bienestar total.',
+                        'images/Anti-stress.jpg'),
+                    _buildServiceCard(
+                        'Masaje Descontracturante',
+                        'Alivia tensiones y dolores musculares.',
+                        'images/Masaje-Descontracturante.jpg'),
+                    _buildServiceCard(
+                        'Masaje con Piedras Calientes',
+                        'Relajación profunda con terapia de calor.',
+                        'images/Masaje-Piedras-Calientes.jpg'),
+                    _buildServiceCard(
+                        'Masaje Circulatorio',
+                        'Mejora la circulación y reduce la fatiga.',
+                        'images/Masaje-Circulatorio.jpg'),
                   ]),
                   _buildCategory("Belleza", [
-                    _buildServiceCard('Lifting de Pestañas', 'Pestañas más largas y curvas de forma natural.', 'images/servicios/Lifting-Pestanas.jpg'),
-                    _buildServiceCard('Depilación Facial', 'Elimina el vello no deseado de forma suave.', 'images/servicios/Depilacion-Facial.jpg'),
-                    _buildServiceCard('Belleza de manos y pies', 'Manicura y pedicura profesional.', 'images/servicios/Belleza-Manos-Pies.jpg'),
+                    _buildServiceCard(
+                        'Lifting de Pestañas',
+                        'Pestañas más largas y curvas de forma natural.',
+                        'images/Lifting-Pestanas.jpg'),
+                    _buildServiceCard(
+                        'Depilación Facial',
+                        'Elimina el vello no deseado de forma suave.',
+                        'images/Depilacion-Facial.jpg'),
+                    _buildServiceCard(
+                        'Belleza de manos y pies',
+                        'Manicura y pedicura profesional.',
+                        'images/Belleza-Manos-Pies.jpg'),
                   ]),
                   _buildCategory("Tratamientos Faciales", [
-                    _buildServiceCard('Punta de Diamante', 'Exfoliación y renovación celular profunda.', 'images/servicios/Punta-Diamante.jpg'),
-                    _buildServiceCard('Limpieza Profunda e Hidratación', 'Purifica y revitaliza tu piel.', 'images/servicios/Limpieza-Profunda-Hidratacion.jpg'),
-                    _buildServiceCard('Crio Frecuencia Facial', 'Rejuvenece y reafirma tu rostro.', 'images/servicios/Crio-Frecuencia-Facial.jpg'),
+                    _buildServiceCard(
+                        'Punta de Diamante',
+                        'Exfoliación y renovación celular profunda.',
+                        'images/Punta-Diamante.jpg'),
+                    _buildServiceCard(
+                        'Limpieza Profunda e Hidratación',
+                        'Purifica y revitaliza tu piel.',
+                        'images/Limpieza-Profunda-Hidratacion.jpg'),
+                    _buildServiceCard(
+                        'Crio Frecuencia Facial',
+                        'Rejuvenece y reafirma tu rostro.',
+                        'images/Crio-Frecuencia-Facial.jpg'),
                   ]),
                   _buildCategory("Tratamientos Corporales", [
-                    _buildServiceCard('VelaSlim', 'Modela tu figura y reduce la celulitis.', 'images/servicios/VelaSlim.jpg'),
-                    _buildServiceCard('DermoHealth', 'Tratamiento especializado para la piel.', 'images/servicios/DermoHealth.jpg'),
-                    _buildServiceCard('Crio Frecuencia Corporal', 'Reduce medidas y tonifica tu cuerpo.', 'images/servicios/Crio-Frecuencia-Corporal.jpg'),
-                    _buildServiceCard('Ultracavitación', 'Elimina grasa localizada sin cirugía.', 'images/servicios/Ultracavitacion.jpg'),
+                    _buildServiceCard(
+                        'VelaSlim',
+                        'Modela tu figura y reduce la celulitis.',
+                        'images/VelaSlim.jpg'),
+                    _buildServiceCard(
+                        'DermoHealth',
+                        'Tratamiento especializado para la piel.',
+                        'images/DermoHealth.jpg'),
+                    _buildServiceCard(
+                        'Crio Frecuencia Corporal',
+                        'Reduce medidas y tonifica tu cuerpo.',
+                        'images/Crio-Frecuencia-Corporal.jpg'),
+                    _buildServiceCard(
+                        'Ultracavitación',
+                        'Elimina grasa localizada sin cirugía.',
+                        'images/Ultracavitacion.jpg'),
                   ]),
                 ],
               ),
@@ -70,8 +112,7 @@ class ServiciosPage extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Text( 
-
+          child: Text(
             categoryTitle,
             style: TextStyle(
               fontSize: 24,
@@ -80,7 +121,7 @@ class ServiciosPage extends StatelessWidget {
             ),
           ),
         ),
-        Wrap( 
+        Wrap(
           alignment: WrapAlignment.start,
           spacing: 10,
           runSpacing: 10,
@@ -93,8 +134,8 @@ class ServiciosPage extends StatelessWidget {
   Widget _buildServiceCard(String title, String description, String imagePath) {
     return Card(
       margin: EdgeInsets.all(8),
-      elevation: 3, 
-      shape: RoundedRectangleBorder( 
+      elevation: 3,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.0),
         side: BorderSide(
           color: Colors.grey[300]!,
@@ -104,7 +145,7 @@ class ServiciosPage extends StatelessWidget {
       child: Container(
         width: 200,
         decoration: BoxDecoration(
-          color: Colors.grey[100], 
+          color: Colors.grey[100],
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Column(

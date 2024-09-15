@@ -163,7 +163,7 @@ class _RegistrarClienteState extends State<RegistrarCliente> {
             width: width,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('../assets/images/inicio/masajes.webp'),
+                image: AssetImage('../assets/images/masajes.webp'),
                 fit: BoxFit.cover,
               ),
             ),
