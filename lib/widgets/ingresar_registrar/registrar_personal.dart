@@ -347,10 +347,12 @@ class _RegistrarPersonalState extends State<RegistrarPersonal> {
                                         'Rol',
                                         _selectedRole,
                                         [
-                                          'Masajista',
-                                          'Esteticista',
-                                          'Especialista en facial',
+                                          'Administrador',
                                           'Especialista en tratamientos corporales',
+                                          'Especialista en facial',
+                                          'Esteticista',
+                                          'Masajista',
+                                          'Secretario/a',
                                         ],
                                         (String? newValue) {
                                           setState(() {
