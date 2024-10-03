@@ -73,25 +73,25 @@ class _InicioState extends State<Inicio> {
                   child: CarouselWidget(
                     items: const [
                       {
-                        "image": "../assets/images/belleza.webp",
+                        "image": "assets/images/belleza.webp",
                         "title": "Belleza",
                         "description":
                             "Realza tu belleza natural con nuestros tratamientos exclusivos."
                       },
                       {
-                        "image": "../assets/images/facial.webp",
+                        "image": "assets/images/Facial.webp",
                         "title": "Tratamientos Faciales",
                         "description":
                             "Revitaliza tu piel con nuestras técnicas avanzadas de cuidado facial."
                       },
                       {
-                        "image": "../assets/images/corporales.webp",
+                        "image": "assets/images/corporales.webp",
                         "title": "Tratamientos Corporales",
                         "description":
                             "Cuida y tonifica tu cuerpo con nuestros tratamientos personalizados."
                       },
                       {
-                        "image": "../assets/images/masajes.webp",
+                        "image": "assets/images/masajes.webp",
                         "title": "Masajes",
                         "description":
                             "Relájate y desconecta con nuestros masajes terapéuticos."

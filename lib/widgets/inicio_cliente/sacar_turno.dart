@@ -22,6 +22,14 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
   List<String> _especialidades = [];
   List<Map<String, String>> _personales = [];
   List<TimeOfDay> _horariosOcupados = [];
+  double? _precioServicio;
+
+  final Map<String, double> preciosServicios = {
+    'Masajes': 10000.0,
+    'Belleza': 8000.0,
+    'Tratamientos Faciales': 15000.0,
+    'Tratamientos Corporales': 13000.0,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +49,7 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
     _especialidades = [];
     _personales = [];
     _horariosOcupados = [];
+    _precioServicio = null;
 
     showDialog(
       context: context,
@@ -74,6 +83,7 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                         _especialidades = [];
                         _personales = [];
                         _horariosOcupados = [];
+                        _precioServicio = preciosServicios[newValue!];
                       });
                       if (newValue != null) {
                         _especialidades = await turnoService
@@ -91,6 +101,17 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                       setState(() {});
                     },
                   ),
+                  if (_selectedServicio != null && _precioServicio != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        'Precio: \$$_precioServicio',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
                   if (_selectedServicio != null)
                     DropdownButton<String>(
                       value: _selectedEspecialidad,
@@ -130,20 +151,20 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                     Column(
                       children: [
                         const SizedBox(height: 8),
-                       HoverButton(
-                        onPressed: () async {
-                          DateTime? pickedDate = await _selectDate(context);
-                          if (pickedDate != null) {
-                            setState(() {
-                              _selectedDate = pickedDate;
-                              _updateHorariosOcupados();
-                            });
-                          }
-                        },
-                        text: _selectedDate == null
-                            ? 'Selecciona la fecha'
-                            : '${_selectedDate!.toLocal()}'.split(' ')[0],
-                      ),
+                        HoverButton(
+                          onPressed: () async {
+                            DateTime? pickedDate = await _selectDate(context);
+                            if (pickedDate != null) {
+                              setState(() {
+                                _selectedDate = pickedDate;
+                                _updateHorariosOcupados();
+                              });
+                            }
+                          },
+                          text: _selectedDate == null
+                              ? 'Selecciona la fecha'
+                              : '${_selectedDate!.toLocal()}'.split(' ')[0],
+                        ),
                         const SizedBox(height: 8),
                         HoverButton(
                           onPressed: () async {
@@ -211,7 +232,8 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                       'especialidad': _selectedEspecialidad,
                       'personal_a_cargo': personalNombre,
                       'fecha_turno': fechaHoraTurno,
-                      'cliente': '${widget.nombres} ${widget.apellidos}'
+                      'cliente': '${widget.nombres} ${widget.apellidos}',
+                      'precio': _precioServicio,
                     };
                     await turnoService.crearTurno(turnoData);
                     Navigator.of(context).pop();
@@ -284,35 +306,10 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
   }
 
   Future<TimeOfDay?> _selectTime(BuildContext context) async {
-    final List<TimeOfDay> availableTimes = List.generate(15, (index) {
-      return TimeOfDay(hour: 8 + index, minute: 0); // Horas entre 8:00 y 22:00
-    });
-
-    final TimeOfDay? picked = await showDialog<TimeOfDay>(
+    final TimeOfDay? picked = await showTimePicker(
       context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: const Text('Selecciona la hora'),
-          children: availableTimes.map((TimeOfDay time) {
-            final isOcupado = _horariosOcupados.contains(time);
-            return SimpleDialogOption(
-              onPressed: isOcupado
-                  ? null
-                  : () {
-                      Navigator.pop(context, time);
-                    },
-              child: Text(
-                time.format(context),
-                style: TextStyle(
-                  color: isOcupado ? Colors.grey : Colors.black,
-                ),
-              ),
-            );
-          }).toList(),
-        );
-      },
+      initialTime: TimeOfDay.now(),
     );
-
     return picked;
   }
 }
