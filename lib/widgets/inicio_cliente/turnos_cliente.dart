@@ -65,14 +65,37 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
 
   // Método para mostrar el diálogo de confirmación
   Future<void> _mostrarDialogoConfirmacion(String turnoId) async {
+    String? tipoPago; // Variable para almacenar el tipo de pago
+
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // El usuario debe hacer una selección
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Confirmar compra'),
-          content:
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
               const Text('¿Estás seguro de que deseas confirmar la compra?'),
+              const SizedBox(height: 20),
+              DropdownButton<String>(
+                value: tipoPago,
+                hint: const Text('Seleccionar método de pago'),
+                items: <String>['Débito', 'Crédito', 'Transferencia']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    tipoPago = newValue; // Actualizar tipo de pago
+                  });
+                },
+              ),
+            ],
+          ),
           actions: <Widget>[
             TextButton(
               child: const Text('Cancelar'),
@@ -83,9 +106,20 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
             TextButton(
               child: const Text('Aceptar'),
               onPressed: () async {
-                // Actualiza el estado a "Pagado" en Firebase
-                await turnoService
-                    .actualizarTurno(turnoId, {'estado': 'Pagado'});
+                if (tipoPago != null) {
+                  // Actualiza el estado a "Pagado" y tipo de pago en Firebase
+                  await turnoService.actualizarTurno(turnoId, {
+                    'estado': 'Pagado',
+                    'tipo_pago': tipoPago, // Actualizar tipo de pago
+                  });
+                } else {
+                  // Manejar el caso donde no se seleccionó un método de pago
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Selecciona un método de pago')),
+                  );
+                  return;
+                }
                 Navigator.of(context).pop(); // Cerrar el diálogo
               },
             ),

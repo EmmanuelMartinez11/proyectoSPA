@@ -230,6 +230,7 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                       'cliente': '${widget.nombres} ${widget.apellidos}',
                       'precio': _precioServicio,
                       'estado': 'Reservado',
+                      'tipo_pago': 'No pagado',
                     };
                     await turnoService.crearTurno(turnoData);
                     Navigator.of(context).pop();
