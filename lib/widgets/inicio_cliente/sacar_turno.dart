@@ -18,11 +18,11 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
   String? _selectedPersonal;
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
+  double? _precioServicio;
   final TurnoService turnoService = TurnoService();
   List<String> _especialidades = [];
   List<Map<String, String>> _personales = [];
   List<TimeOfDay> _horariosOcupados = [];
-  double? _precioServicio;
 
   final Map<String, double> preciosServicios = {
     'Masajes': 10000.0,
@@ -46,10 +46,10 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
     _selectedPersonal = null;
     _selectedDate = null;
     _selectedTime = null;
+    _precioServicio = null;
     _especialidades = [];
     _personales = [];
     _horariosOcupados = [];
-    _precioServicio = null;
 
     showDialog(
       context: context,
@@ -64,12 +64,7 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                   DropdownButton<String>(
                     value: _selectedServicio,
                     hint: const Text('Selecciona un servicio'),
-                    items: [
-                      'Masajes',
-                      'Belleza',
-                      'Tratamientos Faciales',
-                      'Tratamientos Corporales'
-                    ].map((String value) {
+                    items: preciosServicios.keys.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -80,10 +75,10 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                         _selectedServicio = newValue;
                         _selectedEspecialidad = null;
                         _selectedPersonal = null;
+                        _precioServicio = preciosServicios[newValue];
                         _especialidades = [];
                         _personales = [];
                         _horariosOcupados = [];
-                        _precioServicio = preciosServicios[newValue!];
                       });
                       if (newValue != null) {
                         _especialidades = await turnoService
@@ -101,52 +96,52 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                       setState(() {});
                     },
                   ),
-                  if (_selectedServicio != null && _precioServicio != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        'Precio: \$$_precioServicio',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
+                  if (_precioServicio != null)
+                    Text(
+                      'Precio: \$$_precioServicio',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                  if (_selectedServicio != null)
-                    DropdownButton<String>(
-                      value: _selectedEspecialidad,
-                      hint: const Text('Selecciona una especialidad'),
-                      items: _especialidades.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedEspecialidad = newValue;
-                          _selectedPersonal = null;
-                          _horariosOcupados = [];
-                        });
-                      },
-                    ),
-                  if (_selectedEspecialidad != null)
-                    DropdownButton<String>(
-                      value: _selectedPersonal,
-                      hint: const Text('Selecciona el personal a cargo'),
-                      items: _personales.map((personal) {
-                        return DropdownMenuItem<String>(
-                          value: personal['id'],
-                          child: Text(personal['nombre']!),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedPersonal = newValue;
-                          _horariosOcupados = [];
-                        });
-                      },
-                    ),
+                  DropdownButton<String>(
+                    value: _selectedEspecialidad,
+                    hint: const Text('Selecciona una especialidad'),
+                    items: _especialidades.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: _selectedServicio == null
+                        ? null // Si no se ha seleccionado servicio, deshabilita este Dropdown
+                        : (String? newValue) {
+                            setState(() {
+                              _selectedEspecialidad = newValue;
+                              _selectedPersonal = null;
+                              _horariosOcupados = [];
+                            });
+                          },
+                    disabledHint: const Text('Primero selecciona un servicio'),
+                  ),
+                  DropdownButton<String>(
+                    value: _selectedPersonal,
+                    hint: const Text('Selecciona el personal a cargo'),
+                    items: _personales.map((personal) {
+                      return DropdownMenuItem<String>(
+                        value: personal['id'],
+                        child: Text(personal['nombre']!),
+                      );
+                    }).toList(),
+                    onChanged: _selectedEspecialidad == null
+                        ? null // Si no se ha seleccionado especialidad, deshabilita este Dropdown
+                        : (String? newValue) {
+                            setState(() {
+                              _selectedPersonal = newValue;
+                              _horariosOcupados = [];
+                            });
+                          },
+                    disabledHint:
+                        const Text('Primero selecciona una especialidad'),
+                  ),
                   if (_selectedPersonal != null)
                     Column(
                       children: [
@@ -200,7 +195,8 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                     _selectedEspecialidad != null &&
                     _selectedPersonal != null &&
                     _selectedDate != null &&
-                    _selectedTime != null) {
+                    _selectedTime != null &&
+                    _precioServicio != null) {
                   DateTime fechaHoraTurno = DateTime(
                     _selectedDate!.year,
                     _selectedDate!.month,
@@ -209,7 +205,6 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                     _selectedTime!.minute,
                   );
 
-                  // Validar que la fecha y hora seleccionadas sean futuras
                   if (fechaHoraTurno.isBefore(DateTime.now())) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -234,6 +229,7 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
                       'fecha_turno': fechaHoraTurno,
                       'cliente': '${widget.nombres} ${widget.apellidos}',
                       'precio': _precioServicio,
+                      'estado': 'Reservado',
                     };
                     await turnoService.crearTurno(turnoData);
                     Navigator.of(context).pop();
@@ -306,10 +302,35 @@ class _SacarTurnoButtonState extends State<SacarTurnoButton> {
   }
 
   Future<TimeOfDay?> _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
+    final List<TimeOfDay> availableTimes = List.generate(15, (index) {
+      return TimeOfDay(hour: 8 + index, minute: 0); // Horas entre 8:00 y 22:00
+    });
+
+    final TimeOfDay? picked = await showDialog<TimeOfDay>(
       context: context,
-      initialTime: TimeOfDay.now(),
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: const Text('Selecciona la hora'),
+          children: availableTimes.map((TimeOfDay time) {
+            final isOcupado = _horariosOcupados.contains(time);
+            return SimpleDialogOption(
+              onPressed: isOcupado
+                  ? null
+                  : () {
+                      Navigator.pop(context, time);
+                    },
+              child: Text(
+                time.format(context),
+                style: TextStyle(
+                  color: isOcupado ? Colors.grey : Colors.black,
+                ),
+              ),
+            );
+          }).toList(),
+        );
+      },
     );
+
     return picked;
   }
 }

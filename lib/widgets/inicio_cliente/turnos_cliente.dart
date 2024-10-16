@@ -27,10 +27,72 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
     final nombreCompleto = '$nombres $apellidos';
     while (true) {
       final turnos = await turnoService.obtenerTurnosCliente(nombreCompleto);
-      yield turnos;
+      final List<Map<String, dynamic>> turnosActualizados = [];
+
+      final ahora = DateTime.now();
+
+      for (var turno in turnos) {
+        DateTime fechaTurno = (turno['fecha_turno'] as Timestamp).toDate();
+        String estado = turno['estado'] ?? "Reservado"; // Valor por defecto
+
+        // Asegúrate de que el estado solo se modifica si no es "Pagado"
+        if (estado != "Pagado") {
+          final diferenciaDias = fechaTurno.difference(ahora).inDays;
+          if (diferenciaDias > 2) {
+            estado = "Reservado";
+          } else if (diferenciaDias <= 2) {
+            estado = "Caducado";
+          }
+
+          // Actualizar el estado en Firebase si ha cambiado
+          if (estado != turno['estado']) {
+            await turnoService.actualizarTurno(turno['id'], {'estado': estado});
+          }
+        }
+
+        // Agregar turno actualizado
+        turnosActualizados.add({
+          ...turno,
+          'estado': estado,
+        });
+      }
+
+      yield turnosActualizados;
       await Future.delayed(
           const Duration(seconds: 10)); // Actualizar cada 10 segundos
     }
+  }
+
+  // Método para mostrar el diálogo de confirmación
+  Future<void> _mostrarDialogoConfirmacion(String turnoId) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // El usuario debe hacer una selección
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmar compra'),
+          content:
+              const Text('¿Estás seguro de que deseas confirmar la compra?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el diálogo
+              },
+            ),
+            TextButton(
+              child: const Text('Aceptar'),
+              onPressed: () async {
+                // Actualiza el estado a "Pagado" en Firebase
+                await turnoService
+                    .actualizarTurno(turnoId, {'estado': 'Pagado'});
+                Navigator.of(context).pop(); // Cerrar el diálogo
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -65,6 +127,8 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
             DataColumn(label: Text('Hora')),
             DataColumn(label: Text('Servicio')),
             DataColumn(label: Text('Personal')),
+            DataColumn(label: Text('Precio')),
+            DataColumn(label: Text('Estado')),
             DataColumn(label: Text('')),
           ],
           rows: turnos.map((data) {
@@ -74,8 +138,11 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
                 '${fecha.hour.toString().padLeft(2, '0')}:${fecha.minute.toString().padLeft(2, '0')}';
             final servicio = '${data['servicio']} - ${data['especialidad']}';
             final personal = data['personal_a_cargo'];
+            final precio = (data['precio'] != null)
+                ? data['precio'].toString()
+                : "No disponible"; // Maneja el caso nulo
+            final estado = data['estado'];
             final turnoId = data['id'];
-            final ahora = DateTime.now();
 
             return DataRow(
               cells: [
@@ -83,11 +150,22 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
                 DataCell(Text(horaFormateada)),
                 DataCell(Text(servicio)),
                 DataCell(Text(personal)),
+                DataCell(Text(precio)), // Usar el valor asegurado
+                DataCell(
+                    Text(estado ?? "No disponible")), // Manejamos el caso nulo
                 DataCell(
                   Row(
                     children: [
-                      if (fecha.isAfter(
-                          ahora)) // Solo muestra el ícono si el turno es en el futuro
+                      if (estado == "Reservado")
+                        IconButton(
+                          icon: const Icon(Icons.attach_money),
+                          onPressed: () {
+                            _mostrarDialogoConfirmacion(
+                                turnoId); // Llama al diálogo
+                          },
+                        ),
+                      // Solo mostrar el ícono de eliminar si el estado no es "Pagado" o "Caducado"
+                      if (estado != "Pagado" && estado != "Caducado")
                         IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () async {

@@ -131,6 +131,8 @@ class TurnoService {
           'servicio': doc['servicio'],
           'especialidad': doc['especialidad'],
           'personal_a_cargo': doc['personal_a_cargo'],
+          'precio': doc['precio'],
+          'estado': doc['estado'],
         };
       }).toList();
     } catch (e) {
@@ -170,6 +172,14 @@ class TurnoService {
       await turnosCollection.doc(idTurno).delete();
     } catch (e) {
       print('Error al cancelar el turno: $e');
+    }
+  }
+
+  Future<void> actualizarEstadoTurno(String idTurno, String nuevoEstado) async {
+    try {
+      await turnosCollection.doc(idTurno).update({'estado': nuevoEstado});
+    } catch (e) {
+      print('Error al actualizar el estado del turno: $e');
     }
   }
 }
