@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'sacar_turno.dart';
 import 'turnos_cliente.dart';
 import 'proximo_turno.dart';
+import 'comprobante.dart';  // Importa la pantalla para generar el comprobante
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ClienteScreen extends StatelessWidget {
@@ -12,7 +13,6 @@ class ClienteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     String nombres = clienteDoc['nombres'];
     String apellidos = clienteDoc['apellidos'];
 
@@ -21,22 +21,21 @@ class ClienteScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Volver al inicio'),
-        backgroundColor: fondoColor,  
-        elevation: 0,  
+        backgroundColor: fondoColor,
+        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); 
+            Navigator.pop(context);
           },
         ),
       ),
       body: Container(
-        color: fondoColor, 
+        color: fondoColor,
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(
-                  16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Text(
                 'Bienvenido $nombres $apellidos',
                 style: GoogleFonts.greatVibes(
@@ -65,20 +64,35 @@ class ClienteScreen extends StatelessWidget {
                       children: <Widget>[
                         ProximoTurno(nombres: nombres, apellidos: apellidos),
                         const SizedBox(height: 20),
-                        SacarTurnoButton(
-                            nombres: nombres, apellidos: apellidos),
+                        SacarTurnoButton(nombres: nombres, apellidos: apellidos),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Navega a la pantalla de generar comprobante
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => GenerarComprobanteScreen(
+                                  nombres: nombres,
+                                  apellidos: apellidos,
+                                ),
+                              ),
+                            );
+                          },
+                          child: const Text('Generar Comprobante'),
+                        ),
                       ],
                     ),
                   ),
                   Expanded(
                     flex: 2,
                     child: Padding(
-                      padding: const EdgeInsets.only(right: 50.0), 
+                      padding: const EdgeInsets.only(right: 50.0),
                       child: Container(
                         padding: const EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(228, 255, 255, 255), 
-                          borderRadius: BorderRadius.circular(10.0), 
+                          color: const Color.fromARGB(228, 255, 255, 255),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                         child: TurnosClienteTable(
                           nombres: nombres,
