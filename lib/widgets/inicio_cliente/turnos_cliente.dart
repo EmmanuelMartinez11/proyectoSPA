@@ -1,6 +1,13 @@
+import 'dart:math';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:proyecto_flutter/utils/crud_turnos.dart';
+import 'package:printing/printing.dart'; // Paquete para manejar PDF e impresión
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class TurnosClienteTable extends StatefulWidget {
   final String nombres;
@@ -35,7 +42,6 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
         DateTime fechaTurno = (turno['fecha_turno'] as Timestamp).toDate();
         String estado = turno['estado'] ?? "Reservado"; // Valor por defecto
 
-        // Asegúrate de que el estado solo se modifica si no es "Pagado"
         if (estado != "Pagado") {
           final diferenciaDias = fechaTurno.difference(ahora).inDays;
           if (diferenciaDias > 2) {
@@ -44,13 +50,11 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
             estado = "Caducado";
           }
 
-          // Actualizar el estado en Firebase si ha cambiado
           if (estado != turno['estado']) {
             await turnoService.actualizarTurno(turno['id'], {'estado': estado});
           }
         }
 
-        // Agregar turno actualizado
         turnosActualizados.add({
           ...turno,
           'estado': estado,
@@ -58,12 +62,10 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
       }
 
       yield turnosActualizados;
-      await Future.delayed(
-          const Duration(seconds: 10)); // Actualizar cada 10 segundos
+      await Future.delayed(const Duration(seconds: 10));
     }
   }
-
-  // Método para mostrar el diálogo de confirmación
+    // Método para mostrar el diálogo de confirmación
   Future<void> _mostrarDialogoConfirmacion(String turnoId) async {
     String? tipoPago; // Variable para almacenar el tipo de pago
 
@@ -128,6 +130,75 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
       },
     );
   }
+Future<void> _generarComprobantePDF(Map<String, dynamic> turno) async {
+  final pdf = pw.Document();
+
+  // Cargar el logo de los assets
+  final ByteData bytes = await rootBundle.load('images/logo_spa.png'); // Cambia la ruta si es necesario
+  final Uint8List logoBytes = bytes.buffer.asUint8List(); // Convertirlo a Uint8List
+  final comprobanteNumero = Random().nextInt(10000); // Generar un número aleatorio para el comprobante
+
+  // Calcular el total, si es necesario
+  final double total = turno['precio']; // Ajusta esto según cómo necesites calcular el total
+
+  pdf.addPage(
+    pw.Page(
+      pageFormat: PdfPageFormat.a4,
+      build: (pw.Context context) {
+        return pw.Column(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            // Encabezado con el logo, nombre del lugar y número de comprobante
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Image(pw.MemoryImage(logoBytes), width: 50, height: 50), // Usar el logo cargado
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.end,
+                  children: [
+                    pw.Text('SPA Sentirse Bien', style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold)), // Cambia esto por el nombre real
+                    pw.Text('Comprobante N°: $comprobanteNumero', style: pw.TextStyle(fontSize: 12)),
+                  ],
+                ),
+              ],
+            ),
+            pw.SizedBox(height: 20),
+            pw.Text(
+              'Comprobante de Pago',
+              style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold),
+            ),
+            pw.SizedBox(height: 20),
+            pw.Text('Cliente: ${widget.nombres} ${widget.apellidos}'),
+            pw.Text('Servicio: ${turno['servicio']} - ${turno['especialidad']}'),
+            pw.Text('Personal: ${turno['personal_a_cargo']}'),
+            pw.Text('Fecha del Turno: ${(turno['fecha_turno'] as Timestamp).toDate()}'),
+            pw.Text('Precio: ${turno['precio']}'),
+            pw.Text('Estado: ${turno['estado']}'),
+            pw.SizedBox(height: 20),
+            pw.Table.fromTextArray(
+              context: context,
+              data: <List<String>>[
+                <String>['Servicio', 'Especialidad', 'Personal', 'Fecha', 'Precio'],
+                [
+                  turno['servicio'] as String,
+                  turno['especialidad'] as String,
+                  turno['personal_a_cargo'] as String,
+                  '${(turno['fecha_turno'] as Timestamp).toDate().day}/${(turno['fecha_turno'] as Timestamp).toDate().month}/${(turno['fecha_turno'] as Timestamp).toDate().year}',
+                  '${turno['precio']}',
+                ],
+                <String>['Total', '', '', '', '$total'],
+              ],
+            ),
+          ],
+        );
+      },
+    ),
+  );
+
+  await Printing.layoutPdf(
+    onLayout: (PdfPageFormat format) async => pdf.save(),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -148,11 +219,10 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
 
         final turnos = snapshot.data!;
 
-        // Ordena los turnos por fecha de mayor a menor
         turnos.sort((a, b) {
           DateTime fechaA = (a['fecha_turno'] as Timestamp).toDate();
           DateTime fechaB = (b['fecha_turno'] as Timestamp).toDate();
-          return fechaB.compareTo(fechaA); // Orden descendente
+          return fechaB.compareTo(fechaA);
         });
 
         return DataTable(
@@ -172,9 +242,7 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
                 '${fecha.hour.toString().padLeft(2, '0')}:${fecha.minute.toString().padLeft(2, '0')}';
             final servicio = '${data['servicio']} - ${data['especialidad']}';
             final personal = data['personal_a_cargo'];
-            final precio = (data['precio'] != null)
-                ? data['precio'].toString()
-                : "No disponible"; // Maneja el caso nulo
+            final precio = data['precio']?.toString() ?? "No disponible";
             final estado = data['estado'];
             final turnoId = data['id'];
 
@@ -184,9 +252,8 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
                 DataCell(Text(horaFormateada)),
                 DataCell(Text(servicio)),
                 DataCell(Text(personal)),
-                DataCell(Text(precio)), // Usar el valor asegurado
-                DataCell(
-                    Text(estado ?? "No disponible")), // Manejamos el caso nulo
+                DataCell(Text(precio)),
+                DataCell(Text(estado ?? "No disponible")),
                 DataCell(
                   Row(
                     children: [
@@ -194,11 +261,16 @@ class _TurnosClienteTableState extends State<TurnosClienteTable> {
                         IconButton(
                           icon: const Icon(Icons.attach_money),
                           onPressed: () {
-                            _mostrarDialogoConfirmacion(
-                                turnoId); // Llama al diálogo
+                            _mostrarDialogoConfirmacion(turnoId);
                           },
                         ),
-                      // Solo mostrar el ícono de eliminar si el estado no es "Pagado" o "Caducado"
+                      if (estado == "Pagado")
+                        IconButton(
+                          icon: const Icon(Icons.receipt),
+                          onPressed: () {
+                            _generarComprobantePDF(data);
+                          },
+                        ),
                       if (estado != "Pagado" && estado != "Caducado")
                         IconButton(
                           icon: const Icon(Icons.delete),

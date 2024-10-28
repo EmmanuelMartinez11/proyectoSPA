@@ -54,6 +54,8 @@ class ClienteScreen extends StatelessWidget {
                         const SizedBox(height: 20),
                         SacarTurnoButton(
                             nombres: nombres, apellidos: apellidos),
+                        const SizedBox(height: 20),
+                        // Agrega aquí el botón de "Obtener Comprobante"
                       ],
                     ),
                   ),
